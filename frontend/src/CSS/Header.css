@@ -1,0 +1,133 @@
+/* Main header styles */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px;
+  background-color: #f8f5f0;
+  position: relative;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+  margin-right: 15px;
+}
+
+.website-name {
+  font-size: 0.9em;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  margin-right: 15px;
+}
+
+.nav-links li {
+  margin-right: 15px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: black;
+  font-size: 1em;
+}
+
+.login-button {
+  cursor: pointer;
+  padding: 10px 15px;
+  background-color: #b3eda9;
+  color: black;
+  text-decoration: none;
+  border-radius: 15px;
+  font-weight: bold;
+}
+
+/* The login form appears on hover */
+.login-form {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 300px;
+  background-color: #105d5e;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.login-form h2 {
+  margin-bottom: 15px;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: white;
+}
+
+.form-group {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.9em;
+  margin-bottom: 5px;
+  color: white;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #b3eda9;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.login-btn:hover {
+  background-color: #45a049;
+}
+
+.form-links {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.form-links a {
+  text-decoration: none;
+  color: #ebfadb;
+  font-size: 0.9em;
+}
+
+.form-links p {
+  font-size: 0.9em;
+  color: white;
+}

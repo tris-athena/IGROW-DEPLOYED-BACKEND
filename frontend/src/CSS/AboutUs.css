@@ -1,0 +1,60 @@
+.pageContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 50px;
+    background-color: #f8f5f0;
+  }
+  
+  .imageSection {
+    flex: 1;
+    padding-right: 30px;
+  }
+  
+  .image {
+    width: 100%;
+    height: auto;
+    max-width: 500px;
+  }
+  
+  .indexBoxSection {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  
+  .indexBox {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+  
+  .indexBoxTitle {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+    margin-bottom: 10px;
+  }
+  
+  .indexBoxContent {
+    font-size: 16px;
+    margin: 0;
+    color: #555;
+  }
+  
+  .learnMoreButton {
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background-color: #3498db;
+    border-radius: 30px;
+    text-decoration: none;
+    padding: 10px 20px;
+    text-align: center;
+    white-space: nowrap;
+  }
+  
