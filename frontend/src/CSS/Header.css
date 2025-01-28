@@ -1,12 +1,38 @@
 /* Main header styles */
+.header-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  margin-top: 20px;
+  background-color: #f8f9f0;
+}
+
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0px;
-  background-color: #f8f5f0;
-  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  padding: 10px 20px;
 }
+
+.website-name {
+  margin-left: 5px;
+  text-align: left;
+}
+
+.website-name__main {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.website-name__sub {
+  font-size: 1rem;
+  margin: 0;
+}
+
 
 .logo-section {
   display: flex;
@@ -26,16 +52,19 @@
 .navbar {
   display: flex;
   align-items: center;
+  width: 10%;
+
+  
 }
 
 .nav-links {
   list-style: none;
   display: flex;
-  margin-right: 15px;
+  margin-right: 5px;
 }
 
 .nav-links li {
-  margin-right: 15px;
+  margin-right: 60px;
 }
 
 .nav-links a {
@@ -43,6 +72,17 @@
   color: black;
   font-size: 1em;
 }
+
+.nav-links a:hover {
+  color: #275c5d; 
+  font-weight: bold;
+}
+
+.nav-links .active-link {
+  color: #105d5e; /* Optional: keep the color on active state */
+  font-weight: bold; /* Keep text bold when active */
+}
+
 
 .login-button {
   cursor: pointer;
@@ -52,6 +92,17 @@
   text-decoration: none;
   border-radius: 15px;
   font-weight: bold;
+  width: 100;
+}
+
+.login-button:hover {
+  background-color: salmon;
+}
+
+
+
+.login-wrapper {
+  position: relative; /* Ensure positioning for the login form */
 }
 
 /* The login form appears on hover */
@@ -100,20 +151,8 @@
   border-radius: 5px;
 }
 
-.login-btn {
-  width: 100%;
-  padding: 10px;
-  background-color: #b3eda9;
-  color: black;
-  border: none;
-  border-radius: 5px;
-  font-size: 1em;
-  font-weight: bold;
-  cursor: pointer;
-}
-
 .login-btn:hover {
-  background-color: #45a049;
+  background-color: green;
 }
 
 .form-links {

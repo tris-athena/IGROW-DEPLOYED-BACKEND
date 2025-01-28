@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; 
+import { Link, NavLink } from 'react-router-dom';
 import '../../CSS/Header.css';
 
 function Header() {
@@ -17,31 +17,57 @@ function Header() {
     <div className="header-container">
       <header className="header">
         <div className="logo-section">
-          <img src="images/Logo.png" alt="iGROW Logo" className="logo" />
+          <a href="/">
+            <img src="images/logoIGROW.png" alt="iGROW Logo" className="logo" />
+          </a>
           <div className="website-name">
-            <h1 className="website-name__main">iGROW</h1>
+            <h2 className="website-name__main">iGROW</h2>
             <p className="website-name__sub">Transforming Agriculture with Smart Solutions</p>
           </div>
         </div>
 
         <nav className="navbar">
           <ul className="nav-links">
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/about">About</Link></li>
-            <li><a href="/testimonials">Testimonials</a></li>
+            <li>
+              <NavLink
+                to="/"
+                className={({ isActive }) => (isActive ? 'nav-link active-link' : 'nav-link')}
+              >
+                Home
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/about"
+                className={({ isActive }) => (isActive ? 'nav-link active-link' : 'nav-link')}
+              >
+                About
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/testimonials"
+                className={({ isActive }) => (isActive ? 'nav-link active-link' : 'nav-link')}
+              >
+                Testimonials
+              </NavLink>
+            </li>
           </ul>
-          <a 
-            href="#login" 
-            className="login-button" 
-            onMouseEnter={handleLoginHover} 
-            
-          >
+        </nav>
+
+        {/* Login hover wrapper */}
+        <div
+          className="login-wrapper"
+          onMouseEnter={handleLoginHover}
+          onMouseLeave={handleLoginHoverOut}
+        >
+          <a href="#login" className="login-button">
             LOGIN
           </a>
 
           {/* Conditionally render the login form when hovered */}
           {showLoginForm && (
-            <div className="login-form" onMouseLeave={handleLoginHoverOut}>
+            <div className="login-form">
               <h2>LOGIN</h2>
               <form>
                 <div className="form-group">
@@ -60,7 +86,7 @@ function Header() {
               </div>
             </div>
           )}
-        </nav>
+        </div>
       </header>
     </div>
   );

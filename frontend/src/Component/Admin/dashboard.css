@@ -1,0 +1,87 @@
+/* Remove default margin and padding from body and html */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: #105d5e; /* Set background color */
+}
+
+/* Content area */
+.content {
+    padding: 20px;
+    margin-top: 0; /* Ensure no margin on top */
+    transition: margin-left 0.3s ease-in-out; /* Smooth transition */
+}
+
+/* Header */
+h1 {
+    margin-top: 0; /* Remove top margin from the header */
+}
+
+/* Flexbox for dashboard items */
+.row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; /* Adjust space between boxes */
+    margin-bottom: 20px;
+}
+
+/* Style for each dashboard box */
+.dashboard-box {
+    flex: 1;
+    min-width: 200px; /* Set minimum width to ensure even distribution */
+    padding: 20px;
+    background-color: #ebfadb; /* Sidebar box color */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Heading inside dashboard box */
+.dashboard-box h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+/* Paragraph inside dashboard box */
+.dashboard-box p {
+    font-size: 16px;
+}
+
+/* Make last dashboard box span full width */
+.dashboard-box:last-child {
+    flex-basis: 100%; /* For the user management graph, make it span full width */
+}
+
+/* Sidebar styles */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #ebfadb;
+    color: #ebfadb;
+    padding: 20px 10px;
+    position: fixed;
+    top: 0;
+    left: -250px;  /* Initially hidden off-screen */
+    transition: left 0.3s ease-in-out;
+}
+
+.sidebar.active {
+    left: 0;  /* When active, move sidebar to the left */
+}
+
+/* Adjust content margin when sidebar is active */
+.content.sidebar-active {
+    margin-left: 270px;  /* Push content to the right when sidebar is active */
+}
+
+/* Hamburger menu button */
+.hamburger-menu {
+    font-size: 30px;
+    color: #ebfadb;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    cursor: pointer;
+    z-index: 10;
+}

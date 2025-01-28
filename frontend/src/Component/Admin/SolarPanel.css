@@ -1,0 +1,60 @@
+.management-container {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .management-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .management-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .management-table th,
+  .management-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+  }
+  
+  .management-table th {
+    background-color: #4caf50;
+    color: white;
+    font-size: 16px;
+  }
+  
+  .management-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .management-table tr:hover {
+    background-color: #ddd;
+  }
+  
+  .management-table td {
+    color: #333;
+    font-size: 14px;
+  }
+  
+  .delete-button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .delete-button:hover {
+    background-color: #d73838;
+  }
+  

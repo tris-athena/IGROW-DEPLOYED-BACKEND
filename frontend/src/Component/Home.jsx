@@ -84,7 +84,7 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: '70px',
-    backgroundColor: '#f8f5f0',
+    backgroundColor: '#f8f9f0',
   },
   contentContainer: {
     flex: 1,
