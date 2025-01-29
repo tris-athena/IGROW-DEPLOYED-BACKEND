@@ -83,8 +83,10 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '70px',
+    padding: '100px',
     backgroundColor: '#f8f9f0',
+    fontFamily: 'Poppins, sans-serif',
+    flexWrap: 'wrap', // Allow wrapping for responsiveness
   },
   contentContainer: {
     flex: 1,
@@ -94,6 +96,8 @@ const styles = {
     alignItems: 'flex-start',
     marginRight: '20px',
     position: 'relative',
+    flexBasis: '50%', // Initial flex size for larger screens
+    padding: '20px',
   },
   textSection: {
     display: 'flex',
@@ -109,9 +113,10 @@ const styles = {
     margin: '0',
     padding: '0',
     display: 'block',
+    color: '#6d412b',
   },
   igrowText: {
-    fontSize: '200px',
+    fontSize: '150px',
     fontWeight: 'bold',
     margin: '0',
     padding: '0',
@@ -133,12 +138,15 @@ const styles = {
     whiteSpace: 'nowrap',
     border: 'none',
     cursor: 'pointer',
+    fontFamily: 'Poppins, sans-serif',
+    marginLeft: '50px',
   },
   logoSection: {
     display: 'flex',
     justifyContent: 'flex-start',
     gap: '20px',
-    marginTop: '30px',
+    marginTop: '80px',
+    flexWrap: 'wrap', // Allow logos to wrap on smaller screens
   },
   logoImage: {
     width: '60px',
@@ -147,8 +155,10 @@ const styles = {
   imageSection: {
     flex: 1,
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',  // Align image to the right
     alignItems: 'center',
+    flexBasis: '50%', // Image takes 50% of space on larger screens
+    marginTop: '20px',
   },
   largeImage: {
     maxWidth: '100%',
@@ -171,6 +181,7 @@ const styles = {
     padding: '20px',
     borderRadius: '10px',
     textAlign: 'center',
+    fontFamily: 'Poppins, sans-serif',
   },
   closeButton: {
     marginTop: '10px',
@@ -180,6 +191,46 @@ const styles = {
     border: 'none',
     borderRadius: '5px',
     cursor: 'pointer',
+    fontFamily: 'Poppins, sans-serif',
+  },
+  // Media Queries for responsiveness
+  '@media screen and (max-width: 768px)': {
+    homeContainer: {
+      flexDirection: 'column',
+      padding: '20px',
+    },
+    contentContainer: {
+      flexBasis: '100%',
+      marginRight: '0',
+    },
+    igrowText: {
+      fontSize: '100px', // Smaller font size for mobile
+    },
+    button: {
+      fontSize: '14px', // Adjust button font size
+      padding: '8px 16px', // Adjust button padding
+    },
+    logoImage: {
+      width: '50px', // Smaller logos for mobile
+    },
+    imageSection: {
+      flexBasis: '100%', // Full width on smaller screens
+      marginTop: '20px',
+      justifyContent: 'center', // Center the image on mobile
+    },
+  },
+
+  '@media screen and (max-width: 480px)': {
+    igrowText: {
+      fontSize: '80px', // Even smaller font size for very small screens
+    },
+    button: {
+      fontSize: '12px', // Smaller button text for smaller screens
+      padding: '6px 12px',
+    },
+    textLine: {
+      fontSize: '20px', // Smaller text for smaller screens
+    },
   },
 };
 
