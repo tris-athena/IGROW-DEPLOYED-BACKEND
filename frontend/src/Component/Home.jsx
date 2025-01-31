@@ -1,26 +1,32 @@
 import React, { useState } from 'react';
 
 const Home = () => {
-  // State to manage the visibility of the prompt
   const [showPrompt, setShowPrompt] = useState(false);
 
-  // Function to handle the button click
   const handleGrowMoreClick = () => {
-    setShowPrompt(true); // Show the prompt
+    setShowPrompt(true);
   };
 
-  // Function to close the prompt
   const handleClosePrompt = () => {
-    setShowPrompt(false); // Hide the prompt
+    setShowPrompt(false);
   };
 
   return (
     <div className="home" style={styles.homeContainer}>
       <div className="content" style={styles.contentContainer}>
-        {/* Text Section */}
-        <div className="text-section" style={styles.textSection}>
-          <p style={styles.textLine}>dual-source aquaponics</p>
-          <h2 style={styles.igrowText}>iGROW</h2>
+        {/* Text and Image Section */}
+        <div className="text-and-image-section" style={styles.textAndImageSection}>
+          <div className="text-section" style={styles.textSection}>
+            <p style={styles.textLine}>dual-source aquaponics</p>
+            <h2 style={styles.igrowText}>iGROW</h2>
+          </div>
+          <div className="image-section" style={styles.inlineImageSection}>
+            <img 
+              src="images/system.png" 
+              alt="System Image" 
+              style={styles.systemImage}
+            />
+          </div>
         </div>
 
         {/* Button Section */}
@@ -53,15 +59,6 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Image Section */}
-      <div className="image-section" style={styles.imageSection}>
-        <img 
-          src="images/system.png" 
-          alt="Large Image" 
-          style={styles.largeImage}
-        />
-      </div>
-
       {/* Prompt Modal */}
       {showPrompt && (
         <div style={styles.promptOverlay}>
@@ -77,7 +74,6 @@ const Home = () => {
   );
 };
 
-// Styles for layout and positioning
 const styles = {
   homeContainer: {
     display: 'flex',
@@ -86,7 +82,7 @@ const styles = {
     padding: '100px',
     backgroundColor: '#f8f9f0',
     fontFamily: 'Poppins, sans-serif',
-    flexWrap: 'wrap', // Allow wrapping for responsiveness
+    flexWrap: 'wrap',
   },
   contentContainer: {
     flex: 1,
@@ -95,18 +91,24 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'flex-start',
     marginRight: '20px',
-    position: 'relative',
-    flexBasis: '50%', // Initial flex size for larger screens
+    flexBasis: '50%',
     padding: '20px',
   },
+  textAndImageSection: {
+    display: 'flex',
+    justifyContent: 'space-between', // Separates the text and image into two distinct columns
+    alignItems: 'center',
+    flexWrap: 'wrap', // Wrap content if the screen size is small
+    marginBottom: '20px',
+  },
   textSection: {
+    flex: '1', // Occupies one part of the column
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-end',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
     margin: '0',
     padding: '0',
-    marginBottom: '20px',
   },
   textLine: {
     fontSize: '30px',
@@ -121,6 +123,18 @@ const styles = {
     margin: '0',
     padding: '0',
     display: 'block',
+  },
+  inlineImageSection: {
+    flex: '1', // Occupies one part of the column
+    display: 'flex',
+    justifyContent: 'center', // Centers the image within its column
+    alignItems: 'center',
+  },
+  systemImage: {
+    marginLeft: '200px',
+    maxWidth: '100%', // Scales within its column
+    maxHeight: '1000px', // Ensures the image height remains reasonable
+    objectFit: 'contain', // Prevents distortion while resizing
   },
   buttonSection: {
     marginTop: '20px',
@@ -146,24 +160,11 @@ const styles = {
     justifyContent: 'flex-start',
     gap: '20px',
     marginTop: '80px',
-    flexWrap: 'wrap', // Allow logos to wrap on smaller screens
+    flexWrap: 'wrap',
   },
   logoImage: {
     width: '60px',
     height: 'auto',
-  },
-  imageSection: {
-    flex: 1,
-    display: 'flex',
-    justifyContent: 'flex-end',  // Align image to the right
-    alignItems: 'center',
-    flexBasis: '50%', // Image takes 50% of space on larger screens
-    marginTop: '20px',
-  },
-  largeImage: {
-    maxWidth: '100%',
-    height: 'auto',
-    maxHeight: '500px',
   },
   promptOverlay: {
     position: 'fixed',
@@ -192,45 +193,6 @@ const styles = {
     borderRadius: '5px',
     cursor: 'pointer',
     fontFamily: 'Poppins, sans-serif',
-  },
-  // Media Queries for responsiveness
-  '@media screen and (max-width: 768px)': {
-    homeContainer: {
-      flexDirection: 'column',
-      padding: '20px',
-    },
-    contentContainer: {
-      flexBasis: '100%',
-      marginRight: '0',
-    },
-    igrowText: {
-      fontSize: '100px', // Smaller font size for mobile
-    },
-    button: {
-      fontSize: '14px', // Adjust button font size
-      padding: '8px 16px', // Adjust button padding
-    },
-    logoImage: {
-      width: '50px', // Smaller logos for mobile
-    },
-    imageSection: {
-      flexBasis: '100%', // Full width on smaller screens
-      marginTop: '20px',
-      justifyContent: 'center', // Center the image on mobile
-    },
-  },
-
-  '@media screen and (max-width: 480px)': {
-    igrowText: {
-      fontSize: '80px', // Even smaller font size for very small screens
-    },
-    button: {
-      fontSize: '12px', // Smaller button text for smaller screens
-      padding: '6px 12px',
-    },
-    textLine: {
-      fontSize: '20px', // Smaller text for smaller screens
-    },
   },
 };
 
