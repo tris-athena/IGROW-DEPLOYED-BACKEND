@@ -79,7 +79,7 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: '100px',
+    padding: '80px',
     backgroundColor: '#f8f9f0',
     fontFamily: 'Poppins, sans-serif',
     flexWrap: 'wrap',
@@ -92,7 +92,7 @@ const styles = {
     alignItems: 'flex-start',
     marginRight: '20px',
     flexBasis: '50%',
-    padding: '20px',
+    padding: '0px',
   },
   textAndImageSection: {
     display: 'flex',
