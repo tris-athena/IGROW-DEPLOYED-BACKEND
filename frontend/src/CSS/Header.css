@@ -16,7 +16,7 @@
   padding-left: 0; /* Ensure no left padding */
 }
 
-/* Ensure no space on the left */
+/* Header layout */
 .header {
   display: flex;
   justify-content: space-between;
@@ -26,7 +26,7 @@
   padding: 10px 20px;
 }
 
-/* Adjust logo section if necessary */
+/* Logo Section */
 .logo-section {
   display: flex;
   align-items: center;
@@ -58,6 +58,7 @@
   margin: 0;
 }
 
+/* Navbar */
 .navbar {
   display: flex;
   align-items: center;
@@ -93,6 +94,111 @@
   font-weight: bold;
 }
 
+/* Profile dropdown styling */
+.profile-wrapper {
+  position: relative;
+}
+
+.profile-btn {
+  background-color: transparent;
+  border: none;
+  color: #333;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 10px 20px;
+  text-transform: capitalize;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.3s, background-color 0.3s;
+}
+
+.profile-btn:hover {
+  color: #ff6f61; /* Highlight color on hover */
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+  position: absolute;
+  top: 45px; /* Adjust as needed to align with the Profile button */
+  right: 0;
+  background-color: #fff;
+  border-radius: 8px;
+  width: 220px;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+  padding: 10px 0;
+  z-index: 1000;
+  display: none; /* Hide initially */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.dropdown-menu.show {
+  display: block;
+  opacity: 1;
+}
+
+/* Dropdown header */
+.dropdown-header {
+  font-size: 16px;
+  font-weight: 600;
+  padding: 12px 20px;
+  color: #333;
+  border-bottom: 1px solid #eee;
+  text-align: center;
+  background-color: #f9f9f9;
+  text-transform: uppercase;
+}
+
+/* User name */
+.user-name {
+  padding: 10px 20px;
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+}
+
+/* Dropdown items */
+.dropdown-item {
+  padding: 12px 20px;
+  color: #333;
+  text-decoration: none;
+  display: block;
+  font-size: 14px;
+  text-transform: capitalize;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.dropdown-item:hover {
+  background-color: #f4f4f4; /* Subtle hover effect */
+  color: #ff6f61; /* Change color on hover */
+}
+
+/* Logout button style */
+.logout-btn {
+  color: #ff4d4d;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 12px 20px;
+  text-align: left;
+  width: 100%;
+  transition: color 0.3s, background-color 0.3s;
+}
+
+.logout-btn:hover {
+  background-color: #ffe1e1;
+  color: #d43f3f;
+}
+
+/* Adding a separator between dropdown items */
+.dropdown-item:not(:last-child) {
+  border-bottom: 1px solid #eee;
+}
+
+/* Login button styles */
 .login-button {
   cursor: pointer;
   padding: 10px 15px;

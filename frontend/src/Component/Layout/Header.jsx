@@ -9,13 +9,17 @@ function Header() {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login state
+  const [showDropdown, setShowDropdown] = useState(false); // Track dropdown visibility
+  const [userName, setUserName] = useState(''); // Store the user's name
   const navigate = useNavigate();
 
   useEffect(() => {
     // Check if the user is already logged in (you can use sessionStorage, localStorage, or context)
     const user = sessionStorage.getItem('user');
     if (user) {
+      const userData = JSON.parse(user);
       setIsLoggedIn(true); // User is logged in
+      setUserName(userData.name); // Assuming the user object contains a 'name' field
     }
   }, []);
 
@@ -39,6 +43,7 @@ function Header() {
       console.log('Login Successful:', response.data);
       sessionStorage.setItem('user', JSON.stringify(response.data)); // Store user data in sessionStorage
       setIsLoggedIn(true); // Update login state
+      setUserName(response.data.name); // Set the user name
       navigate("/testimonials");
     } catch (error) {
       if (error.response) {
@@ -47,6 +52,17 @@ function Header() {
         setErrorMessage('Login Failed. Please try again.');
       }
     }
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('user'); // Clear user data from sessionStorage
+    setIsLoggedIn(false); // Update login state
+    setShowDropdown(false); // Close dropdown after logout
+    navigate("/"); // Navigate to the home page after logout
+  };
+
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
   };
 
   return (
@@ -88,14 +104,30 @@ function Header() {
                 Testimonials
               </NavLink>
             </li>
-            <li>
-              <NavLink
-                to="/profile"
-                className={({ isActive }) => (isActive ? 'nav-link active-link' : 'nav-link')}
-              >
-               Profile
-              </NavLink>
-            </li>
+            {/* Conditionally render Profile link and dropdown based on login state */}
+            {isLoggedIn && (
+              <li className="profile-wrapper">
+                <button onClick={toggleDropdown} className="profile-btn">
+                  Profile {/* Display the user's name here */}
+                </button>
+                {showDropdown && (
+                  <div className={`dropdown-menu ${showDropdown ? 'show' : ''}`}>
+                    <div className="dropdown-header">
+                      Profile
+                    </div>
+                    <NavLink
+                      to="/profile"  // Link to Profile page
+                      className="dropdown-item user-name"
+                    >
+                      {userName} {/* Display the user's name here */}
+                    </NavLink>
+                    <button onClick={handleLogout} className="dropdown-item logout-btn">
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </li>
+            )}
           </ul>
         </nav>
 
