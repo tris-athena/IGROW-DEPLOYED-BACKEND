@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import './Profile.css';  // Import the CSS for styling
+import { useNavigate } from 'react-router-dom';
 
 function Profile() {
   const [name, setName] = useState('');
   const [id, setID] = useState('');
   const [role, setRole] = useState('');
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('user'); // Clear user data from sessionStorage
+    navigate("/"); // Navigate to the home page after logout
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -26,7 +33,6 @@ function Profile() {
       setID(id);
       setRole(role);
     }
-    
   }, []); // Runs only once when the component mounts
 
   // Effect to log the updated values whenever any of the state variables change
@@ -45,8 +51,11 @@ function Profile() {
             alt="Profile"
             className="profile-icon"
           />
+          
         </div>
-
+        <button onClick={handleLogout} className="dropdown-item logout-btn">
+          Logout
+        </button>
         {/* Three Icons at the Bottom */}
         <div className="icons-container">
           <img src="images/logoTaguig.png" alt="Taguig Logo" className="icon" />
@@ -83,7 +92,7 @@ function Profile() {
               required
             />
           </div>
-
+          
           <div className="form-group">
             <label htmlFor="role">Role</label>
             <select
