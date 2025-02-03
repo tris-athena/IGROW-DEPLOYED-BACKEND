@@ -7,7 +7,7 @@ import Testimonials from './Component/User/Testimonials';
 import Registration from './Component/User/Registration';
 import Profile from './Component/User/Profile';  // Correct the import for Profile component
 import Password from './Component/User/Password';  // Correct import for ForgotPassword
-import Landing from './Component/User/Landing';
+import Landing from './Component/User/Landing';  // Corrected import for Landing page
 import { ToastContainer } from 'react-toastify';  // Import ToastContainer
 import './App.css';
 
@@ -35,7 +35,7 @@ function App() {
             <Route path="/registration" element={<Registration />} />
             <Route path="/profile" element={<Profile />} /> {/* Correct route for profile */}
             <Route path="/password" element={<Password />} /> {/* Correct route for Forgot Password */}
-            <Route path="landing" element={<Landing />}  />
+            <Route path="/landing" element={<Landing />} /> {/* Fixed the path here */}
 
             {/* Admin Routes */}
             {/* <Route path="/admin/dashboard" element={<Dashboard />} />

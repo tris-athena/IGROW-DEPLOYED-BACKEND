@@ -27,6 +27,41 @@ const sampleTestimonials = [
 
 const Testimonials = () => {
   const [testimonials, setTestimonials] = useState(sampleTestimonials);
+  const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [image, setImage] = useState(null);
+
+  // Handle Modal open
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  // Handle Modal close
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setTitle('');
+    setDescription('');
+    setImage(null);
+  };
+
+  // Handle form submission
+  const handlePost = () => {
+    if (title && description && image) {
+      const newTestimonial = {
+        id: testimonials.length + 1,
+        user: 'New User', // In a real case, this would be dynamically set based on the current user
+        title,
+        caption: description,
+        imageUrl: URL.createObjectURL(image), // Assuming image is a File object
+      };
+
+      setTestimonials([...testimonials, newTestimonial]);
+      closeModal(); // Close the modal after posting
+    } else {
+      alert('Please fill all fields and upload an image.');
+    }
+  };
 
   const handleEdit = (id) => {
     // Handle edit functionality
@@ -43,7 +78,11 @@ const Testimonials = () => {
     <div style={styles.pageContainer}>
       <div style={styles.recentPostsContainer}>
         <h2 style={styles.recentPostsHeading}>Testimonials</h2>
-        <p style={styles.recentPostsMessage}>Here’s what our users have to say</p>
+        
+        
+        {/* Button to open Modal */}
+        <button onClick={openModal} style={styles.createPostButton}>Create Post</button>
+        
         <div style={styles.recentPostImages}>
           {testimonials.map((testimonial) => (
             <div key={testimonial.id} style={styles.postRow}>
@@ -90,6 +129,38 @@ const Testimonials = () => {
           <img src="images/logoTUP.png" alt="TUP Logo" className="icon" />
         </div>
       </div>
+
+      {/* Modal for Create Post */}
+      {isModalOpen && (
+        <div style={styles.modal}>
+          <div style={styles.modalContent}>
+            <h2>Create a New Testimonial</h2>
+            <label htmlFor="postTitle">Title</label>
+            <input
+              type="text"
+              id="postTitle"
+              placeholder="Enter your title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              style={styles.inputField}
+            />
+            <label htmlFor="postDescription">Description</label>
+            <textarea
+              id="postDescription"
+              placeholder="Enter your description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              style={styles.textareaField}
+            />
+            <label htmlFor="imageUpload">Upload Image</label>
+            <input type="file" id="imageUpload" onChange={(e) => setImage(e.target.files[0])} />
+            <div style={styles.modalActions}>
+              <button onClick={closeModal} style={styles.cancelButton}>Cancel</button>
+              <button onClick={handlePost} style={styles.postButton}>Post</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -103,7 +174,7 @@ const styles = {
     padding: '20px',
     backgroundColor: '#f9f9f9',
     minHeight: '100vh',
-    flexWrap: 'wrap', // This will allow the content to wrap on smaller screens
+    flexWrap: 'wrap',
   },
   recentPostsContainer: {
     flex: 1,
@@ -112,7 +183,7 @@ const styles = {
     borderRadius: '8px',
     boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
     width: '100%',
-    maxWidth: '1200px', // Limit max width for larger screens
+    maxWidth: '1200px',
   },
   recentPostsHeading: {
     fontSize: '24px',
@@ -125,6 +196,15 @@ const styles = {
     marginBottom: '20px',
     color: '#666',
     textAlign: 'center',
+  },
+  createPostButton: {
+    padding: '10px 20px',
+    backgroundColor: '#4CAF50',
+    color: 'white',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    marginBottom: '20px',
   },
   recentPostImages: {
     display: 'flex',
@@ -209,53 +289,65 @@ const styles = {
     objectFit: 'contain',
     cursor: 'pointer',
   },
-  // Responsive Design
-  '@media (max-width: 768px)': {
-    pageContainer: {
-      flexDirection: 'column', // Stack content vertically on small screens
-      padding: '10px',
-    },
-    recentPostsContainer: {
-      width: '100%', // Full width on smaller screens
-    },
-    recentPostsHeading: {
-      fontSize: '20px',
-    },
-    recentPostsMessage: {
-      fontSize: '14px',
-    },
-    postMessageBox: {
-      padding: '15px',
-    },
-    postTitle: {
-      fontSize: '16px',
-    },
-    postMessage: {
-      fontSize: '14px',
-    },
-    iconContainer: {
-      flexDirection: 'column',
-      gap: '10px',
-    },
-    logo: {
-      width: '40px', // Smaller logos for mobile view
-      height: '40px',
-    },
+
+  // Modal Styles
+  modal: {
+    display: 'flex',
+    position: 'fixed',
+    top: '0',
+    left: '0',
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
-  '@media (max-width: 480px)': {
-    postRow: {
-      gap: '10px',
-    },
-    actionButtons: {
-      flexDirection: 'column',
-      gap: '10px',
-    },
-    editButton: {
-      width: '100%',
-    },
-    deleteButton: {
-      width: '100%',
-    },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: '30px',
+    borderRadius: '10px',
+    width: '400px',
+    textAlign: 'center',
+  },
+  modalActions: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginTop: '20px',
+  },
+  cancelButton: {
+    padding: '8px 15px',
+    backgroundColor: '#f44336',
+    color: 'white',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+  },
+  postButton: {
+    padding: '8px 15px',
+    backgroundColor: '#4CAF50',
+    color: 'white',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+  },
+
+  // Input and Textarea Styles
+  inputField: {
+    width: '100%',
+    padding: '10px',
+    margin: '10px 0',
+    border: '1px solid #ccc',
+    borderRadius: '5px',
+    fontSize: '16px',
+  },
+  textareaField: {
+    width: '100%',
+    padding: '10px',
+    margin: '10px 0',
+    border: '1px solid #ccc',
+    borderRadius: '5px',
+    fontSize: '16px',
+    height: '100px',
   },
 };
 
