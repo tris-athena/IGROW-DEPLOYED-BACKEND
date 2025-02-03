@@ -4,7 +4,40 @@ body {
     padding: 0;
     background-color: #f8f5f0;
   }
+  .file-upload-button {
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-right: 20px; /* Space between the button and preview */
+  }
   
+  .file-upload-button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Image preview styling */
+  .image-preview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px; /* Adjust the size of the circle */
+    height: 80px; /* Adjust the size of the circle */
+    border-radius: 50%; /* Makes the container circular */
+    overflow: hidden; /* Ensures the image doesn't overflow the circle */ /* Optional: adds a border around the circle */
+    margin-bottom: 10px;
+    margin-left: 10px; /* Adds some space between the button and the preview */
+  }
+  
+  /* Image inside the preview */
+  .preview-img {
+    width: 100%; /* Make the image fill the container */
+    height: 100%; /* Make the image fill the container */
+    object-fit: cover; /* Ensures the image covers the circle without distorting */
+  }
   .registration-container {
     display: flex;
     justify-content: space-between;

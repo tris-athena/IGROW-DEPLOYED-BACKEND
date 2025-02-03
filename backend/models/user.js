@@ -14,10 +14,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please enter your password'],
     },
-    address: {
-      type: String,
-      required: [true, 'Please enter your address'],
-  },
     role: {
         type: String,
         default: 'user'
@@ -45,6 +41,11 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    address: {
+      type: String,
+      required: [true, 'Please enter your address'],
+    },
+    
 });
 
 const User = mongoose.model("User", userSchema);

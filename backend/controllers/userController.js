@@ -35,9 +35,10 @@ exports.Login = async (req, res, next) => {
 };
 
 exports.Register = async (req, res, next) => {
-  console.log(req.files);
+  console.log(req.body);
   try {
-    const { name, email, password } = req.body;
+    
+    const { name, email, password, address } = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -69,7 +70,7 @@ exports.Register = async (req, res, next) => {
     }
   }
   dp = imagesLinks;
-    const newUser = new User({ name, email, password, dp });
+    const newUser = new User({ name, email, password, address, dp });
 
     newUser.verificationToken = crypto.randomBytes(20).toString("hex");
 

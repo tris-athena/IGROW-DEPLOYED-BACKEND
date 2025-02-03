@@ -7,7 +7,7 @@ import Testimonials from './Component/User/Testimonials';
 import Registration from './Component/User/Registration';
 import Profile from './Component/User/Profile';  // Correct the import for Profile component
 import Password from './Component/User/Password';  // Correct import for ForgotPassword
-
+import { ToastContainer } from 'react-toastify';  // Import ToastContainer
 import './App.css';
 
 // Helper component to manage headers
@@ -46,6 +46,9 @@ function App() {
             <Route path="/admin/user-management" element={<UserManagement />} /> */}
           </Routes>
         </main>
+
+        {/* Add ToastContainer to enable toast notifications */}
+        <ToastContainer />
       </div>
     </Router>
   );
