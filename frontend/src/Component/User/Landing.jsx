@@ -1,124 +1,193 @@
-import React, { useState } from 'react';
-
-// Sample data for the user's profile and testimonial
-const user = {
-  name: 'John Doe',
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { toast, ToastContainer } from "react-toastify";  // Ensure correct import
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from 'react-router-dom';
+// Sample static user data for fallback
+const defaultUser = {
+  name: 'Aivylat',
   profileImage: 'https://via.placeholder.com/100',
 };
 
-const sampleTestimonial = {
-  id: 1,
-  user: 'John Doe',
-  title: 'Great Service!',
-  caption: 'This service helped me grow my business. Highly recommend!',
-  imageUrl: 'https://via.placeholder.com/150',
-};
-
-const recentPosts = [
-  {
-    id: 1,
-    title: 'How to Improve Your Business',
-    description: 'Learn how to optimize your business processes and increase revenue.',
-    imageUrl: 'https://via.placeholder.com/600',
-  },
-  {
-    id: 2,
-    title: 'Customer Engagement Strategies',
-    description: 'Effective strategies to engage with your customers and grow your audience.',
-    imageUrl: 'https://via.placeholder.com/600',
-  },
-];
-
 const Landing = () => {
-  const [testimonial, setTestimonial] = useState(sampleTestimonial);
+  const [userProfile, setUserProfile] = useState(defaultUser); // Default user profile data
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState(null);
+  const [name, setName] = useState(null);
+  const [emails, setEmail] = useState([]);
+  const [images, setImages] = useState([]);
+    const [success, setSuccess] = useState("");
+    const [posts, setPosts] = useState([]);
+     const navigate = useNavigate();
 
-  // Function to handle modal opening
-  const openModal = () => {
-    setIsModalOpen(true);
+  const [imagePreview, setImagePreview] = useState("");
+  const [loading, setLoading] = useState(true); // State to track loading
+  const [error, setError] = useState(null);
+const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    email: "",
+  });
+  
+  // Fetch user profile data when the component mounts
+  const fetchPosts = async () => {
+    try {
+      
+      if (emails) {
+        const api = emails;
+        console.log(api)
+        const postResponse = await axios.get(`http://localhost:4001/api/v1/post/${api}`);
+  
+        console.log('Raw response:', postResponse.data);
+  
+        const responseData = postResponse.data;
+  
+        // Check if the response contains posts and is in the expected format
+        if (responseData.success && Array.isArray(responseData.posts)) {
+          const postsArray = responseData.posts;
+          console.log('Posts Array:', postsArray); // Log the raw posts array
+  
+          // Sort posts in descending order by createdAt
+          const sortedPosts = postsArray.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+          setPosts(sortedPosts.slice(0, 3)); // Update state with sorted posts (slice to get the 2 most recent)
+        } else {
+          console.log('No posts or incorrect format');
+        }
+      } else {
+        console.log('User not found in session storage');
+      }
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+    } finally {
+      setLoading(false); // Set loading to false after fetching data
+    }
+  };
+  
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Set the preview of the selected image
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result); // Set the image preview URL
+      };
+      reader.readAsDataURL(file);
+      setImages(e.target.files); // Set the selected files
+    }
+  };
+  
+  // Handle post creation
+  const handlePost = async (formData) => {
+    try {
+      setLoading(true);
+
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+      const user = JSON.parse(sessionStorage.getItem("user"));
+      const email = user ? user.emailuser : null;
+      const data = new FormData();
+      data.set("title", title);
+      data.set("description", description);
+      data.set("email", email);
+      Array.from(images).forEach((image, index) => {
+        data.append('images', image, `image_${index}.jpg`);
+      });
+
+      const response = await axios.post("http://localhost:4001/api/v1/post-create", data, config);
+      setLoading(false);
+      setSuccess("Posted Successfully");
+      navigate('/landing')
+      toast.success("Posted successfully!", {
+        position: "bottom-right",  // Hardcoded position string for testing
+      });
+    } catch (error) {
+      setLoading(false);
+      setError(error.response?.data?.message || "Something went wrong");
+      toast.error(error.message, {
+        position: "bottom-right",  // Hardcoded position string for testing
+      });
+    }
   };
 
-  // Function to handle modal closing
+  const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
     setIsModalOpen(false);
     setTitle('');
     setDescription('');
     setImage(null);
   };
-
-  // Handle form submission
-  const handlePost = () => {
-    if (title && description && image) {
-      console.log('New Post Data:', { title, description, image });
-      closeModal(); // Close modal after posting
-    } else {
-      alert('Please fill all fields and upload an image.');
-    }
-  };
-
+  useEffect(() => {
+    const user = JSON.parse(sessionStorage.getItem("user"));
+    setEmail(user.emailuser);
+    setImage(user.dp);
+    setName(user.name)
+ 
+    console.log(image);
+    fetchPosts();
+    
+  }, );
   return (
     <div style={styles.pageContainer}>
-      {/* Rectangle Text Box */}
+      {/* User Profile and Create Post Button */}
       <div style={styles.textBox}>
-        {/* User Profile and Create Post Button */}
         <div style={styles.profileSection}>
           <div style={styles.profileBox}>
-            <img src={user.profileImage} alt={user.name} style={styles.profileImage} />
+            <img
+              src={image || 'https://via.placeholder.com/100'}
+              alt={userProfile.name || 'User'}
+              style={styles.profileImage}
+            />
             <div style={styles.profileDetails}>
-              <h3 style={styles.profileName}>{user.name}</h3>
+              <h3 style={styles.profileName}>
+                {loading ? 'Loading...' : name}
+              </h3>
             </div>
           </div>
           <button onClick={openModal} style={styles.createPostButton}>Create Post</button>
         </div>
-
-        {/* Testimonial Section */}
-        {testimonial && (
-          <div style={styles.testimonialContainer}>
-            <div style={styles.testimonialBox}>
-              <div style={styles.testimonialImageContainer}>
-                <h5 style={styles.testimonialTitle}>{testimonial.title}</h5>
-                <img
-                  src={testimonial.imageUrl}
-                  alt={testimonial.user}
-                  style={styles.testimonialImage}
-                />
-              </div>
-              <p style={styles.testimonialCaption}>{testimonial.caption}</p>
-            </div>
-          </div>
-        )}
       </div>
 
-      {/* Your Recent Post Section */}
+      {/* Recent Posts Section */}
       <div style={styles.recentPostSection}>
         <h2 style={styles.recentPostHeading}>Your Recent Post</h2>
         <ul style={styles.recentPostsList}>
-          {recentPosts.map((post) => (
-            <li key={post.id} style={styles.recentPostItem}>
-              {/* Each post in its own separate box */}
-              <div style={styles.recentPostBox}>
-                <h4 style={styles.recentPostTitle}>{post.title}</h4>
-                <img
-                  src={post.imageUrl}
-                  alt={post.title}
-                  style={styles.recentPostImage}
-                />
-                <p style={styles.recentPostDescription}>{post.description}</p>
-              </div>
-            </li>
-          ))}
+          {loading ? (
+            <li>Loading posts...</li>
+          ) : posts.length > 0 ? (
+            posts.map((post, index) => (
+              <li key={index} style={styles.postCard}>
+                <div style={styles.cardContent}>
+                  <h3 style={styles.postTitle}>{post.title}</h3>
+                  <p style={styles.postDescription}>{post.description}</p>
+                  {post.images && post.images.length > 0 && (
+                    <div style={styles.imageContainer}>
+                      {post.images.map((image, i) => (
+                        <img
+                          key={i}
+                          src={image.url || 'https://via.placeholder.com/150'}  // Check if 'image.url' exists
+                          alt={`Image ${i}`}
+                          style={styles.postImage}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </li>
+            ))
+          ) : (
+            <li>No recent posts available.</li>
+          )}
         </ul>
       </div>
 
-      {/* Logos Section */}
-      <div style={styles.iconContainer}>
-        <img src="images/logoTaguig.png" alt="Taguig Logo" style={styles.logo} />
-        <img src="images/logoCentralSignal.png" alt="Central Signal Logo" style={styles.logo} />
-        <img src="images/logoTUP.png" alt="TUP Logo" style={styles.logo} />
-      </div>
+
+
 
       {/* Modal for Create Post */}
       {isModalOpen && (
@@ -143,7 +212,7 @@ const Landing = () => {
               style={styles.textareaField}
             />
             <label htmlFor="imageUpload">Upload Image</label>
-            <input type="file" id="imageUpload" onChange={(e) => setImage(e.target.files[0])} />
+            <input type="file" id="imageUpload" onChange={handleImageChange} />
             <div style={styles.modalActions}>
               <button onClick={closeModal} style={styles.cancelButton}>Cancel</button>
               <button onClick={handlePost} style={styles.postButton}>Post</button>
@@ -155,8 +224,71 @@ const Landing = () => {
   );
 };
 
-// Styles for the Landing Page
 const styles = {
+  recentPostSection: {
+    padding: '20px',
+    border: '1px solid #ddd',
+    borderRadius: '8px',
+    marginBottom: '20px',
+  },
+  recentPostHeading: {
+    fontSize: '24px',
+    marginBottom: '20px',
+  },
+  recentPostsList: {
+    listStyleType: 'none',
+    padding: 0,
+    display: 'flex',
+    flexDirection: 'row', // Stack posts vertically
+    gap: '40px', // Space between cards
+  },
+  postCard: {
+    backgroundColor: '#fff',
+    borderRadius: '8px',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+    padding: '20px',
+    width: '100%',
+    maxWidth: '400px', // Limit the width of each card
+    margin: '0 auto', // Center align cards
+    display: 'flex',
+    flexDirection: 'column', // Allow flexibility in height and content
+    justifyContent: 'space-between', // Spread the content evenly
+  },
+  cardContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '15px',
+    flexGrow: 1, // Allow the content to grow and fill available space
+  },
+  postTitle: {
+    fontSize: '20px',
+    fontWeight: 'bold',
+    margin: 0,
+    overflow: 'hidden', // Hide any overflow text
+    textOverflow: 'ellipsis', // Use ellipsis for overflow text
+    whiteSpace: 'nowrap', // Prevent wrapping the title into new lines
+  },
+  postDescription: {
+    fontSize: '16px',
+    color: '#555',
+    wordWrap: 'break-word', // Ensure the text wraps properly when it exceeds the container's width
+    overflow: 'hidden', // Prevent overflow of content
+    textOverflow: 'ellipsis', // Use ellipsis for overflow text
+  },
+  imageContainer: {
+    display: 'flex',
+    gap: '10px',
+    flexDirection: 'row', // Display images side by side
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignItems: 'center', // Allow images to wrap if there's more than one
+  },
+  postImage: {
+    width: '100%', // Ensure images take full width of their container
+    maxWidth: '150px', // Limit the max width of each image
+    height: 'auto',
+    borderRadius: '4px',
+  },
   pageContainer: {
     display: 'flex',
     flexDirection: 'column',
@@ -204,92 +336,9 @@ const styles = {
     border: 'none',
     borderRadius: '5px',
     cursor: 'pointer',
-    marginTop: '10px', // Added margin-top for better spacing
-  },
-  testimonialContainer: {
-    marginTop: '30px',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '10px',
-  },
-  testimonialTitle: {
-    fontSize: '18px',
-    fontWeight: 'bold',
-  },
-  testimonialBox: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '10px',
-  },
-  testimonialImageContainer: {
-    position: 'relative',
-  },
-  testimonialImage: {
-    width: '100%',
-    height: 'auto',
-    borderRadius: '10px',
-  },
-  testimonialCaption: {
-    fontSize: '14px',
-    color: '#555',
-  },
-  recentPostSection: {
-    width: '100%',
-    padding: '20px',
-    backgroundColor: '#ffffff',
-    boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
-    borderRadius: '10px',
-    marginBottom: '40px',
-  },
-  recentPostHeading: {
-    fontSize: '24px',
-    marginBottom: '20px',
-  },
-  recentPostsList: {
-    listStyleType: 'none',
-    padding: '0',
-  },
-  recentPostItem: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '10px',
-    marginBottom: '15px',
-  },
-  recentPostBox: {
-    padding: '20px',
-    backgroundColor: '#f4f4f4',
-    borderRadius: '8px',
-    boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
-  },
-  recentPostTitle: {
-    fontSize: '20px',
-    fontWeight: 'bold',
-    marginBottom: '10px',
-  },
-  recentPostImage: {
-    width: '100%',
-    height: 'auto',
-    borderRadius: '10px',
-    marginBottom: '15px',
-  },
-  recentPostDescription: {
-    fontSize: '14px',
-    color: '#555',
-  },
-  iconContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    gap: '20px',
-    marginTop: '30px',
-  },
-  logo: {
-    width: '50px',
-    height: '50px',
-    objectFit: 'contain',
-    cursor: 'pointer',
+    marginTop: '10px',
   },
 
-  // Modal Styles
   modal: {
     display: 'flex',
     position: 'fixed',
@@ -329,8 +378,6 @@ const styles = {
     borderRadius: '5px',
     cursor: 'pointer',
   },
-
-  // Input and Textarea Styles
   inputField: {
     width: '100%',
     padding: '10px',

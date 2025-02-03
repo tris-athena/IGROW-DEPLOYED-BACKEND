@@ -104,7 +104,7 @@ const Registration = () => {
         </p>
       </div>
       <div className="right-section">
-        <Formik
+        <Formik 
           initialValues={{
             name: "",
             email: "",
@@ -133,10 +133,10 @@ const Registration = () => {
       <label htmlFor="file-upload" className="file-upload-button">
             Choose File
           </label>
-         
+          </div>
           
                 <ErrorMessage name="photo" component="div" className="invalid-feedback" />
-              </div>
+             
              {/* Only render the image preview if an image is selected */}
 {imagePreview && (
   <div className="image-preview">

@@ -33,7 +33,7 @@ exports.CreatePost = async (req, res, next) => {
       }
     }
     images = imagesLinks;
-      const newPost = new Post({ title, description,email, images });
+      const newPost = new Post({ title, description, email, images });
   
       await newPost.save();
    

@@ -103,7 +103,8 @@ function Header() {
                   {errorMessage && <p className="error-message">{errorMessage}</p>}
                   <div className="form-links">
                     <NavLink to="/forgot-password">FORGOT PASSWORD?</NavLink>
-                    <p>DON'T HAVE AN ACCOUNT YET? <NavLink to="/registration">SIGN UP</NavLink></p>
+                    <br></br>
+                     <NavLink to="/registration">DON'T HAVE AN ACCOUNT YET? SIGN UP</NavLink>
                   </div>
                 </div>
               )}

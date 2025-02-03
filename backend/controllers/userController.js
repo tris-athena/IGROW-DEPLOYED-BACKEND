@@ -26,8 +26,10 @@ exports.Login = async (req, res, next) => {
     const name = user.name;
     const id = user._id;
     const role = user.role;
+    const emailuser = user.email;
+    const dp = user.dp[0].url;
 //testlang
-    res.status(200).json({  name, id, role });
+    res.status(200).json({  name, id, role, emailuser, dp });
     console.log("Login Successfully")
   } catch (error) {
     res.status(500).json({ message: "Login Failed" });
