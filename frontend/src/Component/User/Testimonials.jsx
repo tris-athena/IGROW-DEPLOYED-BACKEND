@@ -1,85 +1,93 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+// Sample data for the testimonials (in a real app, this could come from an API)
+const sampleTestimonials = [
+  {
+    id: 1,
+    user: 'John Doe',
+    title: 'Great Service!',
+    caption: 'This service helped me grow my business. Highly recommend!',
+    imageUrl: 'https://via.placeholder.com/150',
+  },
+  {
+    id: 2,
+    user: 'Jane Smith',
+    title: 'Fantastic Support!',
+    caption: 'Customer support was quick and efficient. Will use again!',
+    imageUrl: 'https://via.placeholder.com/150',
+  },
+  {
+    id: 3,
+    user: 'Mike Johnson',
+    title: 'Amazing Experience!',
+    caption: 'A wonderful experience from start to finish.',
+    imageUrl: 'https://via.placeholder.com/150',
+  },
+];
 
 const Testimonials = () => {
+  const [testimonials, setTestimonials] = useState(sampleTestimonials);
+
+  const handleEdit = (id) => {
+    // Handle edit functionality
+    alert(`Edit testimonial with ID: ${id}`);
+  };
+
+  const handleDelete = (id) => {
+    // Handle delete functionality
+    const updatedTestimonials = testimonials.filter((testimonial) => testimonial.id !== id);
+    setTestimonials(updatedTestimonials);
+  };
+
   return (
     <div style={styles.pageContainer}>
-      {/* Left Section - Testimonials (Column Layout with square-like message boxes) */}
-      <div style={styles.testimonialsContainer}>
-        <div style={styles.testimonialBox}>
-          <div style={styles.testimonialTextContainer}>
-            <p style={styles.testimonialText}>
-              "iabdsbdhbjednkwndklejmflemjfloejmwlkfinefnheiwfhiewfjiekfeff,
-              dbduheihdiehdiehfiehfiehifheifhiehfiewhfiehfiehfiehwfiehfiehwf"
-            </p>
-            <h3 style={styles.testimonialAuthor}>- aivylat</h3>
-            <a href="#" style={styles.showMoreLink}>Show More</a>
-          </div>
-          <img 
-            src="images/Logo.png" 
-            alt="Person 1" 
-            style={styles.testimonialImage} 
-          />
-        </div>
-
-        <div style={styles.testimonialBox}>
-          <div style={styles.testimonialTextContainer}>
-            <p style={styles.testimonialText}>
-              "dwsdhusawhdsiwkanchsikanckisncksemdnkesmnakdmnsefmnefe
-              djubsujdbusdbujbduebduebdjuesbdjkbesnjkfbjekdbfjkedbfj"
-            </p>
-            <h3 style={styles.testimonialAuthor}>- beabilat</h3>
-            <a href="#" style={styles.showMoreLink}>Show More</a>
-          </div>
-          <img 
-            src="images/Logo.png" 
-            alt="Person 2" 
-            style={styles.testimonialImage} 
-          />
-        </div>
-      </div>
-
-      {/* Right Section - Recent Posts */}
       <div style={styles.recentPostsContainer}>
-        <h2 style={styles.recentPostsHeading}>Recent Posts</h2>
-        <p style={styles.recentPostsMessage}>
-          recent post recent post recent post
-        </p>
+        <h2 style={styles.recentPostsHeading}>Testimonials</h2>
+        <p style={styles.recentPostsMessage}>Here’s what our users have to say</p>
         <div style={styles.recentPostImages}>
-          <div style={styles.postRow}>
-            <div style={styles.postImage}>
-              <img src="images/Logo.png" alt="Post 1" style={styles.postThumbnail} />
+          {testimonials.map((testimonial) => (
+            <div key={testimonial.id} style={styles.postRow}>
+              <div style={styles.postMessageBox}>
+                {/* User Profile */}
+                <div style={styles.postHeader}>
+                  <img
+                    src={testimonial.imageUrl}
+                    alt={testimonial.user}
+                    style={styles.postThumbnail}
+                  />
+                  <div>
+                    <p style={styles.userName}>{testimonial.user}</p>
+                  </div>
+                </div>
+                
+                {/* Title */}
+                <h3 style={styles.postTitle}>{testimonial.title}</h3>
+                
+                {/* Caption */}
+                <p style={styles.postMessage}>{testimonial.caption}</p>
+                
+                {/* Image */}
+                <img src={testimonial.imageUrl} alt="Testimonial" style={styles.testimonialImage} />
+                
+                {/* Edit & Delete buttons */}
+                <div style={styles.actionButtons}>
+                  <button onClick={() => handleEdit(testimonial.id)} style={styles.editButton}>
+                    Edit
+                  </button>
+                  <button onClick={() => handleDelete(testimonial.id)} style={styles.deleteButton}>
+                    Delete
+                  </button>
+                </div>
+              </div>
             </div>
-            <div style={styles.postMessageBox}>
-              <p style={styles.postMessage}>tup</p>
-            </div>
-          </div>
-
-          <div style={styles.postRow}>
-            <div style={styles.postImage}>
-              <img src="images/Logo.png" alt="Post 2" style={styles.postThumbnail} />
-            </div>
-            <div style={styles.postMessageBox}>
-              <p style={styles.postMessage}>tupt</p>
-            </div>
-          </div>
-
-          <div style={styles.postRow}>
-            <div style={styles.postImage}>
-              <img src="images/Logo.png" alt="Post 3" style={styles.postThumbnail} />
-            </div>
-            <div style={styles.postMessageBox}>
-              <p style={styles.postMessage}>tupt</p>
-            </div>
-          </div>
-
-          <div style={styles.postRow}>
-            <div style={styles.postImage}>
-              <img src="images/Logo.png" alt="Post 4" style={styles.postThumbnail} />
-            </div>
-            <div style={styles.postMessageBox}>
-              <p style={styles.postMessage}>tupt</p>
-            </div>
-          </div>
+          ))}
+        </div>
+        
+        {/* Logos */}
+        <div style={styles.iconContainer}>
+          <img src="images/logoTaguig.png" alt="Taguig Logo" className="icon" />
+          <img src="images/logoCentralSignal.png" alt="Central Signal Logo" className="icon" />
+          <img src="images/logoTUP.png" alt="TUP Logo" className="icon" />
         </div>
       </div>
     </div>
@@ -91,55 +99,11 @@ const styles = {
   pageContainer: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     padding: '20px',
     backgroundColor: '#f9f9f9',
     minHeight: '100vh',
-  },
-  testimonialsContainer: {
-    flex: 2,
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '20px',
-  },
-  testimonialBox: {
-    backgroundColor: '#105d5e',
-    color: '#ffffff',
-    padding: '20px',
-    borderRadius: '8px',
-    display: 'flex',
-    flexDirection: 'row', // Square-like layout for message box and image
-    gap: '20px',
-    marginBottom: '20px',
-    height: '300px',
-  },
-  testimonialImage: {
-    width: '120px',
-    height: '120px',
-    borderRadius: '50%',
-    objectFit: 'cover',
-    marginTop: '10px',
-  },
-  testimonialTextContainer: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-  },
-  testimonialText: {
-    fontSize: '16px',
-    lineHeight: '1.5',
-  },
-  testimonialAuthor: {
-    marginTop: '10px',
-    fontWeight: 'bold',
-    fontStyle: 'italic',
-  },
-  showMoreLink: {
-    color: '#f1c40f',
-    textDecoration: 'none',
-    marginTop: '10px',
-    display: 'inline-block',
+    flexWrap: 'wrap', // This will allow the content to wrap on smaller screens
   },
   recentPostsContainer: {
     flex: 1,
@@ -147,10 +111,11 @@ const styles = {
     backgroundColor: '#ffffff',
     borderRadius: '8px',
     boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
-    marginLeft: '20px', // Space between message box and recent posts
+    width: '100%',
+    maxWidth: '1200px', // Limit max width for larger screens
   },
   recentPostsHeading: {
-    fontSize: '20px',
+    fontSize: '24px',
     marginBottom: '10px',
     color: '#333',
     textAlign: 'center',
@@ -163,36 +128,134 @@ const styles = {
   },
   recentPostImages: {
     display: 'flex',
-    flexDirection: 'column', // One image per row
-    gap: '20px', // Space between rows
+    flexDirection: 'column',
+    gap: '20px',
   },
   postRow: {
     display: 'flex',
-    flexDirection: 'row-reverse', // Image on the left, message on the right
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: '20px',
+    flexDirection: 'column',
+    gap: '15px',
   },
   postMessageBox: {
-    flex: 1,
-    backgroundColor: '#f0f0f0',
-    padding: '15px',
+    backgroundColor: '#fff',
+    padding: '20px',
     borderRadius: '8px',
-    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+    boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
+    border: '1px solid #ddd',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '15px',
+  },
+  postHeader: {
+    display: 'flex',
+    gap: '10px',
+    alignItems: 'center',
+  },
+  userName: {
+    fontSize: '16px',
+    color: '#333',
+    fontWeight: 'bold',
+  },
+  postTitle: {
+    fontSize: '18px',
+    fontWeight: 'bold',
+    color: '#333',
   },
   postMessage: {
     fontSize: '16px',
-    color: '#333',
+    color: '#555',
     marginBottom: '10px',
   },
-  postImage: {
-    width: '200px',
-    height: 'auto',
-  },
-  postThumbnail: {
+  testimonialImage: {
     width: '100%',
     height: 'auto',
-    borderRadius: '4px',
+    marginTop: '10px',
+  },
+  postThumbnail: {
+    width: '50px',
+    height: '50px',
+    borderRadius: '50%',
+  },
+  actionButtons: {
+    display: 'flex',
+    gap: '10px',
+    marginTop: '15px',
+  },
+  editButton: {
+    padding: '8px 15px',
+    backgroundColor: '#4CAF50',
+    color: 'white',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+  },
+  deleteButton: {
+    padding: '8px 15px',
+    backgroundColor: '#f44336',
+    color: 'white',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+  },
+  iconContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    gap: '20px',
+    marginTop: '30px',
+  },
+  logo: {
+    width: '50px',
+    height: '50px',
+    objectFit: 'contain',
+    cursor: 'pointer',
+  },
+  // Responsive Design
+  '@media (max-width: 768px)': {
+    pageContainer: {
+      flexDirection: 'column', // Stack content vertically on small screens
+      padding: '10px',
+    },
+    recentPostsContainer: {
+      width: '100%', // Full width on smaller screens
+    },
+    recentPostsHeading: {
+      fontSize: '20px',
+    },
+    recentPostsMessage: {
+      fontSize: '14px',
+    },
+    postMessageBox: {
+      padding: '15px',
+    },
+    postTitle: {
+      fontSize: '16px',
+    },
+    postMessage: {
+      fontSize: '14px',
+    },
+    iconContainer: {
+      flexDirection: 'column',
+      gap: '10px',
+    },
+    logo: {
+      width: '40px', // Smaller logos for mobile view
+      height: '40px',
+    },
+  },
+  '@media (max-width: 480px)': {
+    postRow: {
+      gap: '10px',
+    },
+    actionButtons: {
+      flexDirection: 'column',
+      gap: '10px',
+    },
+    editButton: {
+      width: '100%',
+    },
+    deleteButton: {
+      width: '100%',
+    },
   },
 };
 

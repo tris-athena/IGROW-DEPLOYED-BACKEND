@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../Component/Home.css';  // Import the CSS file
 
 const Home = () => {
   const [showPrompt, setShowPrompt] = useState(false);
@@ -17,8 +18,8 @@ const Home = () => {
         {/* Text and Image Section */}
         <div className="text-and-image-section" style={styles.textAndImageSection}>
           <div className="text-section" style={styles.textSection}>
-            <p style={styles.textLine}>dual-source aquaponics</p>
-            <h2 style={styles.igrowText}>iGROW</h2>
+            <p className="textLine">dual-source aquaponics</p>  {/* Use className here */}
+            <h2 className="igrowText">iGROW</h2>  {/* Use className here */}
           </div>
           <div className="image-section" style={styles.inlineImageSection}>
             <img 
@@ -96,13 +97,13 @@ const styles = {
   },
   textAndImageSection: {
     display: 'flex',
-    justifyContent: 'space-between', // Separates the text and image into two distinct columns
+    justifyContent: 'space-between',
     alignItems: 'center',
-    flexWrap: 'wrap', // Wrap content if the screen size is small
+    flexWrap: 'wrap',
     marginBottom: '20px',
   },
   textSection: {
-    flex: '1', // Occupies one part of the column
+    flex: '1',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -110,31 +111,17 @@ const styles = {
     margin: '0',
     padding: '0',
   },
-  textLine: {
-    fontSize: '30px',
-    margin: '0',
-    padding: '0',
-    display: 'block',
-    color: '#6d412b',
-  },
-  igrowText: {
-    fontSize: '150px',
-    fontWeight: 'bold',
-    margin: '0',
-    padding: '0',
-    display: 'block',
-  },
   inlineImageSection: {
-    flex: '1', // Occupies one part of the column
+    flex: '1',
     display: 'flex',
-    justifyContent: 'center', // Centers the image within its column
+    justifyContent: 'center',
     alignItems: 'center',
   },
   systemImage: {
     marginLeft: '200px',
-    maxWidth: '100%', // Scales within its column
-    maxHeight: '1000px', // Ensures the image height remains reasonable
-    objectFit: 'contain', // Prevents distortion while resizing
+    maxWidth: '100%',
+    maxHeight: '1000px',
+    objectFit: 'contain',
   },
   buttonSection: {
     marginTop: '20px',

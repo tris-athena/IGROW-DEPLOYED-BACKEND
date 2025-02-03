@@ -1,0 +1,59 @@
+/* Home.css */
+
+.textLine {
+    font-size: 30px;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    color: #6d412b;
+  }
+  
+  .igrowText {
+    font-size: 150px;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 1200px) {
+    .textLine {
+      font-size: 28px;
+    }
+  
+    .igrowText {
+      font-size: 130px;
+    }
+  }
+  
+  @media (max-width: 992px) {
+    .textLine {
+      font-size: 24px;
+    }
+  
+    .igrowText {
+      font-size: 110px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .textLine {
+      font-size: 20px;
+    }
+  
+    .igrowText {
+      font-size: 90px;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .textLine {
+      font-size: 18px;
+    }
+  
+    .igrowText {
+      font-size: 70px;
+    }
+  }
+  

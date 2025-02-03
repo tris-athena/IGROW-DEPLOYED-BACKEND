@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './Profile.css';  // Import the CSS for styling
+import '../User/Profile.css';  // Import the CSS for styling
 import { useNavigate } from 'react-router-dom';
 
 function Profile() {

@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import '../../CSS/Header.css';
 import axios from 'axios';
+
 function Header() {
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [email, setEmail] = useState('');
@@ -9,25 +10,20 @@ function Header() {
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
-  const isLoggedIn = sessionStorage.getItem('user'); // Directly check sessionStorage
-  const userName = isLoggedIn ? JSON.parse(isLoggedIn).name : ''; // Get user name from sessionStorage
-
-  useEffect(() => {
-    // Optionally, you can log or do something when the component loads
-    // But since no state is necessary here, we don't need to update state based on sessionStorage.
-  }, []);
+  const isLoggedIn = sessionStorage.getItem('user'); // Check sessionStorage for login state
 
   const handleLoginHover = () => setShowLoginForm(true);
   const handleLoginHoverOut = () => setShowLoginForm(false);
 
+  // Handle form submission for login
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const response = await axios.post('http://localhost:4001/api/v1/login', { email, password });
-      sessionStorage.setItem('user', JSON.stringify(response.data));
+      sessionStorage.setItem('user', JSON.stringify(response.data)); // Store user info in sessionStorage
       setEmail('');
       setPassword('');
-      navigate("/testimonials");
+      navigate("/landing"); // Redirect to the landing page after successful login
     } catch (error) {
       setErrorMessage(error.response ? error.response.data.message : 'Login Failed. Please try again.');
     }
@@ -48,11 +44,18 @@ function Header() {
 
         <nav className="navbar">
           <ul className="nav-links">
-            <li><NavLink to="/" className={({ isActive }) => (isActive ? 'nav-link active-link' : 'nav-link')}>Home</NavLink></li>
+            <li>
+              <NavLink
+                to={isLoggedIn ? "/landing" : "/"} // Redirect to landing page if logged in, else to default home
+                className={({ isActive }) => (isActive ? 'nav-link active-link' : 'nav-link')}
+              >
+                Home
+              </NavLink>
+            </li>
             <li><NavLink to="/about" className={({ isActive }) => (isActive ? 'nav-link active-link' : 'nav-link')}>About</NavLink></li>
             <li><NavLink to="/testimonials" className={({ isActive }) => (isActive ? 'nav-link active-link' : 'nav-link')}>Testimonials</NavLink></li>
             {isLoggedIn && (
-               <li><NavLink to="/profile" className={({ isActive }) => (isActive ? 'nav-link active-link' : 'nav-link')}>Profile</NavLink></li>
+              <li><NavLink to="/profile" className={({ isActive }) => (isActive ? 'nav-link active-link' : 'nav-link')}>Profile</NavLink></li>
             )}
           </ul>
         </nav>
@@ -99,13 +102,17 @@ function Header() {
                   </form>
                   {errorMessage && <p className="error-message">{errorMessage}</p>}
                   <div className="form-links">
-                    <Link to="/forgot-password">FORGOT PASSWORD?</Link>
-                    <p>DON'T HAVE AN ACCOUNT YET? <Link to="/registration">SIGN UP</Link></p>
+                    <NavLink to="/forgot-password">FORGOT PASSWORD?</NavLink>
+                    <p>DON'T HAVE AN ACCOUNT YET? <NavLink to="/registration">SIGN UP</NavLink></p>
                   </div>
                 </div>
               )}
             </>
-          ) : null}
+          ) : (
+            // Only show login button when not logged in
+            // Do not display any logout button here
+            <></>
+          )}
         </div>
       </header>
     </div>
