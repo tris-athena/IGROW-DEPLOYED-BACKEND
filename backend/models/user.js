@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please enter your password'],
     },
+    address: {
+      type: String,
+      required: [true, 'Please enter your address'],
+  },
     role: {
         type: String,
         default: 'user'

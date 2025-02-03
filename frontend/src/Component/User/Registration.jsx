@@ -8,7 +8,7 @@ const Registration = () => {
     email: "",
     password: "",
     address: "",
-    classification: "",
+
   });
 
   const handleChange = (e) => {
