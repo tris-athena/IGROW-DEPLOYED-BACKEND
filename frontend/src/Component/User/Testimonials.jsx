@@ -1,268 +1,164 @@
-import React, { useState } from 'react';
-
-// Sample data for the testimonials (in a real app, this could come from an API)
-const sampleTestimonials = [
-  {
-    id: 1,
-    user: 'John Doe',
-    title: 'Great Service!',
-    caption: 'This service helped me grow my business. Highly recommend!',
-    imageUrl: 'https://via.placeholder.com/150',
-  },
-  {
-    id: 2,
-    user: 'Jane Smith',
-    title: 'Fantastic Support!',
-    caption: 'Customer support was quick and efficient. Will use again!',
-    imageUrl: 'https://via.placeholder.com/150',
-  },
-  {
-    id: 3,
-    user: 'Mike Johnson',
-    title: 'Amazing Experience!',
-    caption: 'A wonderful experience from start to finish.',
-    imageUrl: 'https://via.placeholder.com/150',
-  },
-];
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const Testimonials = () => {
-  const [testimonials, setTestimonials] = useState(sampleTestimonials);
-  const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [image, setImage] = useState(null);
+  const [posts, setPosts] = useState([]); // State to store all posts
+  const [loading, setLoading] = useState(true);
+  const [image,setImage] = useState();
+  const [error, setError] = useState(null);
 
-  // Handle Modal open
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
+  // Fetch all posts made by the user
+  const fetchPosts = async () => {
+    try {
+      const user = JSON.parse(sessionStorage.getItem('user'));
+      const email = user ? user.emailuser : null;
 
-  // Handle Modal close
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setTitle('');
-    setDescription('');
-    setImage(null);
-  };
-
-  // Handle form submission
-  const handlePost = () => {
-    if (title && description && image) {
-      const newTestimonial = {
-        id: testimonials.length + 1,
-        user: 'New User', // In a real case, this would be dynamically set based on the current user
-        title,
-        caption: description,
-        imageUrl: URL.createObjectURL(image), // Assuming image is a File object
-      };
-
-      setTestimonials([...testimonials, newTestimonial]);
-      closeModal(); // Close the modal after posting
-    } else {
-      alert('Please fill all fields and upload an image.');
+      if (email) {
+        const response = await axios.get(`http://localhost:4001/api/v1/posts`);
+        setPosts(response.data.posts); // Assuming posts are in response.data.posts
+      } else {
+        setError('User email not found.');
+      }
+    } catch (err) {
+      setError('Error fetching posts: ' + err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleEdit = (id) => {
-    // Handle edit functionality
-    alert(`Edit testimonial with ID: ${id}`);
+  useEffect(() => {
+    const user = JSON.parse(sessionStorage.getItem("user"));
+    if (user) {
+    
+      setImage(user.dp);
+    }
+    fetchPosts();
+  }, []); // Empty dependency array to run once when component mounts
+  
+  const handleDelete = (id) => {
+    console.log('Deleting post with ID:', id);
   };
 
-  const handleDelete = (id) => {
-    // Handle delete functionality
-    const updatedTestimonials = testimonials.filter((testimonial) => testimonial.id !== id);
-    setTestimonials(updatedTestimonials);
+  const handleEdit = (id) => {
+    console.log('Editing post with ID:', id);
   };
 
   return (
-    <div style={styles.pageContainer}>
-      <div style={styles.recentPostsContainer}>
-        <h2 style={styles.recentPostsHeading}>Testimonials</h2>
-        
-        
-        {/* Button to open Modal */}
-        <button onClick={openModal} style={styles.createPostButton}>Create Post</button>
-        
-        <div style={styles.recentPostImages}>
-          {testimonials.map((testimonial) => (
-            <div key={testimonial.id} style={styles.postRow}>
-              <div style={styles.postMessageBox}>
-                {/* User Profile */}
-                <div style={styles.postHeader}>
-                  <img
-                    src={testimonial.imageUrl}
-                    alt={testimonial.user}
-                    style={styles.postThumbnail}
-                  />
-                  <div>
-                    <p style={styles.userName}>{testimonial.user}</p>
-                  </div>
-                </div>
-                
-                {/* Title */}
-                <h3 style={styles.postTitle}>{testimonial.title}</h3>
-                
-                {/* Caption */}
-                <p style={styles.postMessage}>{testimonial.caption}</p>
-                
-                {/* Image */}
-                <img src={testimonial.imageUrl} alt="Testimonial" style={styles.testimonialImage} />
-                
-                {/* Edit & Delete buttons */}
-                <div style={styles.actionButtons}>
-                  <button onClick={() => handleEdit(testimonial.id)} style={styles.editButton}>
-                    Edit
-                  </button>
-                  <button onClick={() => handleDelete(testimonial.id)} style={styles.deleteButton}>
-                    Delete
-                  </button>
-                </div>
-              </div>
+    <div style={styles.container}>
+      <h1 style={styles.header}>Testimonials</h1>
+      {loading ? (
+        <p>Loading posts...</p>
+      ) : error ? (
+        <p>{error}</p>
+      ) : (
+        posts.map((testimonial) => (
+          <div key={testimonial._id} style={styles.testimonialBox}>
+            <div style={styles.profileBox}>
+              <img
+                src={image || 'https://via.placeholder.com/50'}
+                alt={testimonial.userName}
+                style={styles.profileImage}
+              />
+              <span style={styles.profileName}>{testimonial.userName}</span>
             </div>
-          ))}
-        </div>
-        
-        {/* Logos */}
-        <div style={styles.iconContainer}>
-          <img src="images/logoTaguig.png" alt="Taguig Logo" className="icon" />
-          <img src="images/logoCentralSignal.png" alt="Central Signal Logo" className="icon" />
-          <img src="images/logoTUP.png" alt="TUP Logo" className="icon" />
-        </div>
-      </div>
-
-      {/* Modal for Create Post */}
-      {isModalOpen && (
-        <div style={styles.modal}>
-          <div style={styles.modalContent}>
-            <h2>Create a New Testimonial</h2>
-            <label htmlFor="postTitle">Title</label>
-            <input
-              type="text"
-              id="postTitle"
-              placeholder="Enter your title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              style={styles.inputField}
-            />
-            <label htmlFor="postDescription">Description</label>
-            <textarea
-              id="postDescription"
-              placeholder="Enter your description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              style={styles.textareaField}
-            />
-            <label htmlFor="imageUpload">Upload Image</label>
-            <input type="file" id="imageUpload" onChange={(e) => setImage(e.target.files[0])} />
-            <div style={styles.modalActions}>
-              <button onClick={closeModal} style={styles.cancelButton}>Cancel</button>
-              <button onClick={handlePost} style={styles.postButton}>Post</button>
+            <h3 style={styles.postTitle}>{testimonial.title}</h3>
+            <p style={styles.postCaption}>{testimonial.description}</p>
+            <div style={styles.imageContainer}>
+                      {testimonial.images.map((image, i) => (
+                        <img
+                          key={i}
+                          src={image.url || 'https://via.placeholder.com/150'}  // Check if 'image.url' exists
+                          alt={`Image ${i}`}
+                          style={styles.postImage}
+                        />
+                      ))}
+                    </div>
+            <div style={styles.actions}>
+              <button onClick={() => handleEdit(testimonial.id)} style={styles.editButton}>Edit</button>
+              <button onClick={() => handleDelete(testimonial.id)} style={styles.deleteButton}>Delete</button>
             </div>
           </div>
-        </div>
+        ))
       )}
     </div>
   );
 };
 
-// Styles for the Testimonials page
 const styles = {
-  pageContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    padding: '20px',
-    backgroundColor: '#f9f9f9',
-    minHeight: '100vh',
-    flexWrap: 'wrap',
-  },
-  recentPostsContainer: {
-    flex: 1,
-    padding: '20px',
-    backgroundColor: '#ffffff',
-    borderRadius: '8px',
-    boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
+  container: {
     width: '100%',
-    maxWidth: '1200px',
-  },
-  recentPostsHeading: {
-    fontSize: '24px',
-    marginBottom: '10px',
-    color: '#333',
-    textAlign: 'center',
-  },
-  recentPostsMessage: {
-    fontSize: '16px',
-    marginBottom: '20px',
-    color: '#666',
-    textAlign: 'center',
-  },
-  createPostButton: {
-    padding: '10px 20px',
-    backgroundColor: '#4CAF50',
-    color: 'white',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    marginBottom: '20px',
-  },
-  recentPostImages: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '20px',
-  },
-  postRow: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '15px',
-  },
-  postMessageBox: {
-    backgroundColor: '#fff',
     padding: '20px',
-    borderRadius: '8px',
-    boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
-    border: '1px solid #ddd',
+    backgroundColor: '#f8f9f0',
+    boxSizing: 'border-box',
     display: 'flex',
     flexDirection: 'column',
-    gap: '15px',
-  },
-  postHeader: {
-    display: 'flex',
-    gap: '10px',
     alignItems: 'center',
   },
-  userName: {
-    fontSize: '16px',
+  imageContainer: {
+    display: 'flex',
+    
+    gap: '10px',
+    flexDirection: 'row', // Display images side by side
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignItems: 'center', // Allow images to wrap if there's more than one
+  },
+  header: {
+    fontSize: '36px',
+    fontWeight: 'bold',
+    marginBottom: '30px',
     color: '#333',
+  },
+  testimonialBox: {
+    width: '100%',
+    maxWidth: '100%',
+    backgroundColor: '#fff',
+    padding: '20px',
+    marginBottom: '20px',
+    boxSizing: 'border-box',
+    borderRadius: '8px',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+    textAlign: 'center',
+  },
+  profileBox: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    marginBottom: '10px',
+  },
+  profileImage: {
+    width: '50px',
+    height: '50px',
+    borderRadius: '50%',
+    marginRight: '10px',
+  },
+  profileName: {
+    fontSize: '16px',
     fontWeight: 'bold',
   },
   postTitle: {
     fontSize: '18px',
     fontWeight: 'bold',
-    color: '#333',
+    margin: '10px 0',
   },
-  postMessage: {
-    fontSize: '16px',
+  postCaption: {
+    fontSize: '14px',
     color: '#555',
-    marginBottom: '10px',
+    marginBottom: '15px',
   },
-  testimonialImage: {
-    width: '100%',
+  postImage: {
+    width: '20%',
     height: 'auto',
-    marginTop: '10px',
+    borderRadius: '8px',
+    marginBottom: '15px',
   },
-  postThumbnail: {
-    width: '50px',
-    height: '50px',
-    borderRadius: '50%',
-  },
-  actionButtons: {
+  actions: {
     display: 'flex',
+    justifyContent: 'center',
     gap: '10px',
-    marginTop: '15px',
   },
   editButton: {
-    padding: '8px 15px',
+    padding: '10px 20px',
     backgroundColor: '#4CAF50',
     color: 'white',
     border: 'none',
@@ -270,84 +166,12 @@ const styles = {
     cursor: 'pointer',
   },
   deleteButton: {
-    padding: '8px 15px',
+    padding: '10px 20px',
     backgroundColor: '#f44336',
     color: 'white',
     border: 'none',
     borderRadius: '5px',
     cursor: 'pointer',
-  },
-  iconContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    gap: '20px',
-    marginTop: '30px',
-  },
-  logo: {
-    width: '50px',
-    height: '50px',
-    objectFit: 'contain',
-    cursor: 'pointer',
-  },
-
-  // Modal Styles
-  modal: {
-    display: 'flex',
-    position: 'fixed',
-    top: '0',
-    left: '0',
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalContent: {
-    backgroundColor: 'white',
-    padding: '30px',
-    borderRadius: '10px',
-    width: '400px',
-    textAlign: 'center',
-  },
-  modalActions: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    marginTop: '20px',
-  },
-  cancelButton: {
-    padding: '8px 15px',
-    backgroundColor: '#f44336',
-    color: 'white',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-  },
-  postButton: {
-    padding: '8px 15px',
-    backgroundColor: '#4CAF50',
-    color: 'white',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-  },
-
-  // Input and Textarea Styles
-  inputField: {
-    width: '100%',
-    padding: '10px',
-    margin: '10px 0',
-    border: '1px solid #ccc',
-    borderRadius: '5px',
-    fontSize: '16px',
-  },
-  textareaField: {
-    width: '100%',
-    padding: '10px',
-    margin: '10px 0',
-    border: '1px solid #ccc',
-    borderRadius: '5px',
-    fontSize: '16px',
-    height: '100px',
   },
 };
 

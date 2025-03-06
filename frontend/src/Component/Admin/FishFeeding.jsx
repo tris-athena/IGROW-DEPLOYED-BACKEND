@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './WaterCollection.css'; // Reuse the Water Collection CSS for consistency.
+import Sidebar from '../Layout/Sidebar'; // Adjusted import path
 
 const FishFeeding = () => {
   const [data, setData] = useState([
@@ -17,32 +18,35 @@ const FishFeeding = () => {
   };
 
   return (
-    <div className="management-container">
-      <h2 className="management-title">Automated Fish Feeding Management System</h2>
-      <table className="management-table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Feed Amount</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((entry) => (
-            <tr key={entry.id}>
-              <td>{entry.date}</td>
-              <td>{entry.time}</td>
-              <td>{entry.feedAmount}</td>
-              <td>
-                <button className="delete-button" onClick={() => deleteEntry(entry.id)}>
-                  Delete
-                </button>
-              </td>
+    <div className="fish-feeding-page">
+      <Sidebar /> {/* Sidebar included here */}
+      <div className="management-container">
+        <h2 className="management-title">Automated Fish Feeding Management System</h2>
+        <table className="management-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Feed Amount</th>
+              <th>Action</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {data.map((entry) => (
+              <tr key={entry.id}>
+                <td>{entry.date}</td>
+                <td>{entry.time}</td>
+                <td>{entry.feedAmount}</td>
+                <td>
+                  <button className="delete-button" onClick={() => deleteEntry(entry.id)}>
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

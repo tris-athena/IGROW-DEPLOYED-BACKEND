@@ -3,6 +3,7 @@ import axios from 'axios';
 import { toast, ToastContainer } from "react-toastify";  // Ensure correct import
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from 'react-router-dom';
+
 // Sample static user data for fallback
 const defaultUser = {
   name: 'Aivylat',
@@ -16,39 +17,39 @@ const Landing = () => {
   const [description, setDescription] = useState('');
   const [image, setImage] = useState(null);
   const [name, setName] = useState(null);
-  const [emails, setEmail] = useState([]);
+  const [emails, setEmail] = useState(""); // Default to empty string
   const [images, setImages] = useState([]);
-    const [success, setSuccess] = useState("");
-    const [posts, setPosts] = useState([]);
-     const navigate = useNavigate();
+  const [success, setSuccess] = useState("");
+  const [posts, setPosts] = useState([]);
+  const navigate = useNavigate();
 
   const [imagePreview, setImagePreview] = useState("");
   const [loading, setLoading] = useState(true); // State to track loading
   const [error, setError] = useState(null);
-const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState({
     title: "",
     description: "",
     email: "",
   });
-  
+
   // Fetch user profile data when the component mounts
   const fetchPosts = async () => {
     try {
-      
+      // Fetch posts using the user's email
       if (emails) {
         const api = emails;
         console.log(api)
         const postResponse = await axios.get(`http://localhost:4001/api/v1/post/${api}`);
-  
+
         console.log('Raw response:', postResponse.data);
-  
+
         const responseData = postResponse.data;
-  
+
         // Check if the response contains posts and is in the expected format
         if (responseData.success && Array.isArray(responseData.posts)) {
           const postsArray = responseData.posts;
           console.log('Posts Array:', postsArray); // Log the raw posts array
-  
+
           // Sort posts in descending order by createdAt
           const sortedPosts = postsArray.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
           setPosts(sortedPosts.slice(0, 3)); // Update state with sorted posts (slice to get the 2 most recent)
@@ -56,7 +57,7 @@ const [formData, setFormData] = useState({
           console.log('No posts or incorrect format');
         }
       } else {
-        console.log('User not found in session storage');
+        console.log('User email not found in session storage');
       }
     } catch (error) {
       console.error('Error fetching posts:', error);
@@ -64,7 +65,6 @@ const [formData, setFormData] = useState({
       setLoading(false); // Set loading to false after fetching data
     }
   };
-  
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -78,7 +78,7 @@ const [formData, setFormData] = useState({
       setImages(e.target.files); // Set the selected files
     }
   };
-  
+
   // Handle post creation
   const handlePost = async (formData) => {
     try {
@@ -102,10 +102,12 @@ const [formData, setFormData] = useState({
       const response = await axios.post("http://localhost:4001/api/v1/post-create", data, config);
       setLoading(false);
       setSuccess("Posted Successfully");
-      navigate('/landing')
+      navigate('/landing');
       toast.success("Posted successfully!", {
         position: "bottom-right",  // Hardcoded position string for testing
       });
+
+      closeModal(); // Close the modal after posting
     } catch (error) {
       setLoading(false);
       setError(error.response?.data?.message || "Something went wrong");
@@ -122,16 +124,17 @@ const [formData, setFormData] = useState({
     setDescription('');
     setImage(null);
   };
+
   useEffect(() => {
     const user = JSON.parse(sessionStorage.getItem("user"));
-    setEmail(user.emailuser);
-    setImage(user.dp);
-    setName(user.name)
- 
-    console.log(image);
+    if (user) {
+      setEmail(user.emailuser);
+      setImage(user.dp);
+      setName(user.name);
+    }
     fetchPosts();
-    
-  }, );
+  }, [emails]); // Use 'emails' dependency to refetch posts when the email changes
+
   return (
     <div style={styles.pageContainer}>
       {/* User Profile and Create Post Button */}
@@ -185,9 +188,6 @@ const [formData, setFormData] = useState({
           )}
         </ul>
       </div>
-
-
-
 
       {/* Modal for Create Post */}
       {isModalOpen && (
@@ -294,7 +294,7 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     padding: '20px',
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#f8f9f0',  // Updated background color here
     minHeight: '100vh',
   },
   textBox: {

@@ -1,7 +1,6 @@
-// src/Component/Admin/WaterFiltration.js
-
 import React, { useState } from 'react';
-import './WaterFiltration.css'; // Import the CSS for styling
+import '../../CSS/WaterFiltration.css';
+import Sidebar from '../Layout/Sidebar';
 
 const WaterFiltration = () => {
   const [data, setData] = useState([
@@ -11,7 +10,6 @@ const WaterFiltration = () => {
     { id: 4, date: '2025-01-04', time: '11:00 AM', phLevel: 7.0, usage: 35 },
     { id: 5, date: '2025-01-05', time: '12:00 PM', phLevel: 6.8, usage: 20 },
     { id: 6, date: '2025-01-06', time: '01:00 PM', phLevel: 7.1, usage: 45 },
-    // Add more sample data as needed
   ]);
 
   const deleteEntry = (id) => {
@@ -20,31 +18,36 @@ const WaterFiltration = () => {
 
   return (
     <div className="water-filtration-container">
-      <h2>Water Filtration Management System</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Time</th>
-            <th>pH Level</th>
-            <th>Usage (Days)</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
+      <Sidebar />
+
+      <div className="content">
+        {/* Header Section */}
+        <div className="header-container">
+          <h2>Water Filtration Management</h2>
+          <button className="create-button">Create</button>
+        </div>
+
+        {/* Data Grid */}
+        <div className="grid-container">
+          <div className="grid-header">Date</div>
+          <div className="grid-header">Time</div>
+          <div className="grid-header">pH Level</div>
+          <div className="grid-header">Usage (Days)</div>
+          <div className="grid-header">Action</div>
+
           {data.map((entry) => (
-            <tr key={entry.id}>
-              <td>{entry.date}</td>
-              <td>{entry.time}</td>
-              <td>{entry.phLevel}</td>
-              <td>{entry.usage}</td>
-              <td>
-                <button onClick={() => deleteEntry(entry.id)}>Delete</button>
-              </td>
-            </tr>
+            <>
+              <div className="grid-item">{entry.date}</div>
+              <div className="grid-item">{entry.time}</div>
+              <div className="grid-item">{entry.phLevel}</div>
+              <div className="grid-item">{entry.usage}</div>
+              <div className="grid-item">
+                <button className="delete-button" onClick={() => deleteEntry(entry.id)}>Delete</button>
+              </div>
+            </>
           ))}
-        </tbody>
-      </table>
+        </div>
+      </div>
     </div>
   );
 };

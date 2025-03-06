@@ -1,49 +1,128 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import './WaterDrain.css';
+import Sidebar from '../Layout/Sidebar';
 
 const WaterDrain = () => {
-  const [data, setData] = useState([
-    { id: 1, date: '2025-01-01', time: '08:00 AM', amount: 100 },
-    { id: 2, date: '2025-01-02', time: '10:30 AM', amount: 150 },
-    { id: 3, date: '2025-01-03', time: '12:15 PM', amount: 200 },
-    { id: 4, date: '2025-01-04', time: '02:00 PM', amount: 180 },
-    { id: 5, date: '2025-01-05', time: '04:45 PM', amount: 120 },
-    { id: 6, date: '2025-01-06', time: '06:30 AM', amount: 250 },
-    { id: 7, date: '2025-01-07', time: '09:00 AM', amount: 300 },
-    { id: 8, date: '2025-01-08', time: '11:30 AM', amount: 140 },
-    { id: 9, date: '2025-01-09', time: '01:45 PM', amount: 160 },
-    { id: 10, date: '2025-01-10', time: '03:30 PM', amount: 220 },
-    // Add more sample data as needed
-  ]);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [showCreateForm, setShowCreateForm] = useState(false);
+  const [newstate, setNewstate] = useState('');
 
-  const deleteEntry = (id) => {
-    setData(data.filter(entry => entry.id !== id));
+  // Fetch water drain records from the backend
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:4001/api/v1/water-drain');
+        setData(response.data);
+        setLoading(false);
+      } catch (err) {
+        setError('Failed to fetch data');
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Delete a record from the backend
+  const deleteEntry = async (id) => {
+    try {
+      await axios.delete(`http://localhost:4001/api/v1/water-drain/${id}`);
+      setData(data.filter(entry => entry._id !== id));
+    } catch (err) {
+      setError('Failed to delete record');
+    }
   };
 
+  // Handle Create button click to toggle form visibility
+  const handleCreate = () => {
+    setShowCreateForm(!showCreateForm);
+  };
+
+  // Handle form submission to create a new record
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!newstate) {
+        setError('Please fill in all fields');
+        return;
+    }
+
+    try {
+        const newRecord = { state: newstate };
+        
+        console.log('Sending data to the backend:', newRecord); // Log to ensure data is correct
+
+        await axios.post('http://localhost:4001/api/v1/wd-create', newRecord);
+
+        // Reset form fields and hide form after successful submission
+        setNewstate('');
+        setShowCreateForm(false);
+
+        // Fetch updated data
+        const response = await axios.get('http://localhost:4001/api/v1/water-drain');
+        setData(response.data);
+
+        setError(null); // Clear error message if any
+    } catch (err) {
+        setError('Failed to create new record');
+        console.error('Error during record creation:', err);
+    }
+};
+
   return (
-    <div>
-      <h2>Water Drain Management System</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Amount Drained (Liters)</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((entry) => (
-            <tr key={entry.id}>
-              <td>{entry.date}</td>
-              <td>{entry.time}</td>
-              <td>{entry.amount}</td>
-              <td>
-                <button onClick={() => deleteEntry(entry.id)}>Delete</button>
-              </td>
+    <div className="water-drain-container">
+      <Sidebar />
+      <div className="content">
+        <h2>Water Drain Records
+          <button className="create-button" onClick={handleCreate}>Create</button>
+        </h2>
+
+        {loading && <p>Loading...</p>}
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+
+        {showCreateForm && (
+          <form onSubmit={handleSubmit}>
+            <div>
+              <label>State:</label>
+              <select
+                value={newstate}
+                onChange={(e) => setNewstate(e.target.value)}
+                required
+              >
+                <option value="">Select State</option>
+                <option value="on">On</option>
+                <option value="off">Off</option>
+              </select>
+            </div>
+            <button type="submit">Submit</button>
+            <button type="button" onClick={() => setShowCreateForm(false)}>Cancel</button>
+          </form>
+        )}
+
+        <table>
+          <thead>
+            <tr>
+              <th>State</th>
+              <th>Created At</th> {/* Add a column for createdAt */}
+              <th>Action</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {data.map((entry) => (
+              <tr key={entry._id}>
+                <td>{entry.state}</td>
+                <td>{new Date(entry.createdAt).toLocaleString()}</td> {/* Format the createdAt field */}
+                <td>
+                  <button onClick={() => deleteEntry(entry._id)}>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

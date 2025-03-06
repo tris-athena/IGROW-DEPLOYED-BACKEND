@@ -13,53 +13,51 @@ const Home = () => {
   };
 
   return (
-    <div className="home" style={styles.homeContainer}>
-      <div className="content" style={styles.contentContainer}>
-        {/* Text and Image Section */}
-        <div className="text-and-image-section" style={styles.textAndImageSection}>
-          <div className="text-section" style={styles.textSection}>
-            <p className="textLine">dual-source aquaponics</p>  {/* Use className here */}
-            <h2 className="igrowText">iGROW</h2>  {/* Use className here */}
-          </div>
-          <div className="image-section" style={styles.inlineImageSection}>
-            <img 
-              src="images/system.png" 
-              alt="System Image" 
-              style={styles.systemImage}
-            />
-          </div>
+    <div className="content" style={styles.contentContainer}>
+      {/* Text and Image Section */}
+      <div className="text-and-image-section" style={styles.textAndImageSection}>
+        <div className="text-section" style={styles.textSection}>
+          <p className="textLine">dual-source aquaponics</p>
+          <h2 className="igrowText">iGROW</h2>
         </div>
-
-        {/* Button Section */}
-        <div className="button-section" style={styles.buttonSection}>
-          <button 
-            onClick={handleGrowMoreClick} 
-            style={styles.button}
-          >
-            Grow More!
-          </button>
-        </div>
-
-        {/* Logos Section */}
-        <div className="logo-section" style={styles.logoSection}>
+        <div className="image-section" style={styles.inlineImageSection}>
           <img 
-            src="images/logoTaguig.png" 
-            alt="Taguig Logo" 
-            style={styles.logoImage}
-          />
-          <img 
-            src="images/logoCentralSignal.png" 
-            alt="Central Signal Logo" 
-            style={styles.logoImage}
-          />
-          <img 
-            src="images/logoTUP.png" 
-            alt="TUP Logo" 
-            style={styles.logoImage}
+            src="images/system.png" 
+            alt="System Image" 
+            style={styles.systemImage}
           />
         </div>
       </div>
 
+      {/* Button Section */}
+      <div className="button-section" style={styles.buttonSection}>
+        <button 
+          onClick={handleGrowMoreClick} 
+          style={styles.button}
+        >
+          Grow More!
+        </button>
+      </div>
+
+      {/* Logos Section */}
+      <div className="logo-section" style={styles.logoSection}>
+        <img 
+          src="images/logoTaguig.png" 
+          alt="Taguig Logo" 
+          style={styles.logoImage}
+        />
+        <img 
+          src="images/logoCentralSignal.png" 
+          alt="Central Signal Logo" 
+          style={styles.logoImage}
+        />
+        <img 
+          src="images/logoTUP.png" 
+          alt="TUP Logo" 
+          style={styles.logoImage}
+        />
+      </div>
+      
       {/* Prompt Modal */}
       {showPrompt && (
         <div style={styles.promptOverlay}>
@@ -76,52 +74,36 @@ const Home = () => {
 };
 
 const styles = {
-  homeContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '80px',
-    backgroundColor: '#f8f9f0',
-    fontFamily: 'Poppins, sans-serif',
-    flexWrap: 'wrap',
-  },
   contentContainer: {
-    flex: 1,
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-    marginRight: '20px',
-    flexBasis: '50%',
-    padding: '0px',
+    alignItems: 'flex-start',  // Align content to the left
+    textAlign: 'left',         // Ensure text aligns left
+    marginRight: '20px',       // Add margin to the right to give space
+    backgroundColor: '#f8f9f0', // Set background color to #f8f9f0
   },
   textAndImageSection: {
     display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'center',      // Align text and image vertically in the center
     flexWrap: 'wrap',
     marginBottom: '20px',
+    marginLeft: '250px',
   },
   textSection: {
-    flex: '1',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'flex-start',
     margin: '0',
     padding: '0',
+    flex: '1',
   },
   inlineImageSection: {
-    flex: '1',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    flex: '1',
   },
   systemImage: {
-    marginLeft: '200px',
-    maxWidth: '100%',
-    maxHeight: '1000px',
-    objectFit: 'contain',
+    maxWidth: '100%',        // Ensure image takes up the full width of the container
+    maxHeight: '600px',      // Set a max height to avoid cutting
+    width: 'auto',           // Ensure the image is responsive
   },
   buttonSection: {
     marginTop: '20px',
@@ -140,13 +122,15 @@ const styles = {
     border: 'none',
     cursor: 'pointer',
     fontFamily: 'Poppins, sans-serif',
-    marginLeft: '50px',
+    marginTop: '20px',
+    marginLeft: '250px',
   },
   logoSection: {
     display: 'flex',
-    justifyContent: 'flex-start',
+    justifyContent: 'flex-start', // Align logos to the left
     gap: '20px',
-    marginTop: '80px',
+    marginTop: '30px',
+    marginLeft: '250px',
     flexWrap: 'wrap',
   },
   logoImage: {

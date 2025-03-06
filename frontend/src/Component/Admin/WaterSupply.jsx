@@ -1,13 +1,11 @@
-// src/Component/Admin/WaterSupply.js
-
 import React, { useState } from 'react';
-import './WaterSupply.css'; // Import the CSS for styling
+import '../../CSS/WaterSupply.css';
+import Sidebar from '../Layout/Sidebar';
 
 const WaterSupply = () => {
   const [data, setData] = useState([
     { id: 1, date: '2025-01-01', time: '08:00 AM', source: 'Commercial', amountUsed: 500 },
     { id: 2, date: '2025-01-02', time: '09:00 AM', source: 'Rainwater', amountUsed: 300 },
-    // Add more sample data as needed
   ]);
 
   const deleteEntry = (id) => {
@@ -16,31 +14,36 @@ const WaterSupply = () => {
 
   return (
     <div className="water-supply-container">
-      <h2>Water Supply Management System</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Source</th>
-            <th>Amount Used (L)</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
+      <Sidebar />
+
+      <div className="content">
+        {/* Header Section */}
+        <div className="header-container">
+          <h2>Water Supply Management</h2>
+          <button className="create-button">Create</button>
+        </div>
+
+        {/* Data Grid */}
+        <div className="grid-container">
+          <div className="grid-header">Date</div>
+          <div className="grid-header">Time</div>
+          <div className="grid-header">Source</div>
+          <div className="grid-header">Amount Used (L)</div>
+          <div className="grid-header">Action</div>
+
           {data.map((entry) => (
-            <tr key={entry.id}>
-              <td>{entry.date}</td>
-              <td>{entry.time}</td>
-              <td>{entry.source}</td>
-              <td>{entry.amountUsed}</td>
-              <td>
-                <button onClick={() => deleteEntry(entry.id)}>Delete</button>
-              </td>
-            </tr>
+            <>
+              <div className="grid-item">{entry.date}</div>
+              <div className="grid-item">{entry.time}</div>
+              <div className="grid-item">{entry.source}</div>
+              <div className="grid-item">{entry.amountUsed}</div>
+              <div className="grid-item">
+                <button className="delete-button" onClick={() => deleteEntry(entry.id)}>Delete</button>
+              </div>
+            </>
           ))}
-        </tbody>
-      </table>
+        </div>
+      </div>
     </div>
   );
 };

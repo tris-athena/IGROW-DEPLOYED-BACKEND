@@ -20,7 +20,7 @@ const AboutUs = () => {
       {/* Center Section - Image */}
       <div style={styles.imageContainer}>
         <img 
-          src="images/system.png" 
+          src="images/igrowteam.png" 
           alt="About Us" 
           style={styles.image}
         />
@@ -45,7 +45,7 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: '20px',
-    backgroundColor: '#f1f1f1',
+    backgroundColor: '#f8f9f0', // Updated color here
     height: '100vh',
     position: 'relative',
   },
@@ -62,7 +62,7 @@ const styles = {
     padding: '10px',
     border: '1px solid #ccc',
     borderRadius: '8px',
-    backgroundColor: '#105d5e', // Updated color
+    backgroundColor: '#105d5e', // Keep message box color as is
     color: '#ffffff', // Ensure text is readable
   },
   imageContainer: {
@@ -71,24 +71,25 @@ const styles = {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'relative',
+    position: 'relative', // Required for absolute positioning of text
   },
   image: {
-    maxWidth: '100%',
+    maxWidth: '70%',  // Make the image smaller by adjusting width
     height: 'auto',
     borderRadius: '8px',
     marginBottom: '10px',
   },
   teamHeading: {
-    position: 'absolute',
-    top: '10px', // Align to the top
-    left: '10px', // Align to the left
+    position: 'absolute', // Allow text to overlap on the image
+    top: '10px', // Slightly lower to overlap image
+    left: '10px', // Align to the left of the image
     fontSize: '24px',
     fontWeight: 'bold',
-    backgroundColor: '#105d5e', // Updated to match the message box color
+    backgroundColor: '#105d5e', // Matching with message box color
     color: '#ffffff', // Ensure text is readable
     padding: '5px 10px',
     borderRadius: '8px',
+    zIndex: 1, // Ensure text is above the image
   },
   logoContainer: {
     position: 'absolute',

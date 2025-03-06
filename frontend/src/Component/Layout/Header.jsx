@@ -20,12 +20,37 @@ function Header() {
     event.preventDefault();
     try {
       const response = await axios.post('http://localhost:4001/api/v1/login', { email, password });
+      
+      // Log the response data to check the role
+      console.log('Login response:', response.data);
+  
       sessionStorage.setItem('user', JSON.stringify(response.data)); // Store user info in sessionStorage
+  
+      const user = response.data;
+  
+      // Check user role and redirect accordingly
+      if (user.role === 'admin') {
+        console.log('Redirecting to dashboard...');
+        navigate('/admin/dashboard'); // Redirect to dashboard if admin
+      } else {
+        console.log('Redirecting to landing...');
+        navigate('/landing'); // Redirect to landing page for regular user
+      }
+  
+      // Clear form fields after successful login
       setEmail('');
       setPassword('');
-      navigate("/landing"); // Redirect to the landing page after successful login
     } catch (error) {
       setErrorMessage(error.response ? error.response.data.message : 'Login Failed. Please try again.');
+    }
+  };
+  
+
+  const handleLogoClick = () => {
+    if (isLoggedIn) {
+      navigate('/landing'); // Redirect to landing page if logged in
+    } else {
+      navigate('/'); // Redirect to homepage if not logged in
     }
   };
 
@@ -33,9 +58,10 @@ function Header() {
     <div className="header-container">
       <header className="header">
         <div className="logo-section">
-          <a href="/">
-            <img src="images/logoIGROW.png" alt="iGROW Logo" className="logo" />
-          </a>
+          {/* Replace the anchor tag with a div and handle click with a function */}
+          <div onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
+            <img src="images\logoIGROW.png" alt="iGROW Logo" className="logo" />
+          </div>
           <div className="website-name">
             <h2 className="website-name__main">iGROW</h2>
             <p className="website-name__sub">Transforming Agriculture with Smart Solutions</p>
@@ -103,15 +129,14 @@ function Header() {
                   {errorMessage && <p className="error-message">{errorMessage}</p>}
                   <div className="form-links">
                     <NavLink to="/forgot-password">FORGOT PASSWORD?</NavLink>
-                    <br></br>
-                     <NavLink to="/registration">DON'T HAVE AN ACCOUNT YET? SIGN UP</NavLink>
+                    <br />
+                    <NavLink to="/registration">DON'T HAVE AN ACCOUNT YET? SIGN UP</NavLink>
                   </div>
                 </div>
               )}
             </>
           ) : (
             // Only show login button when not logged in
-            // Do not display any logout button here
             <></>
           )}
         </div>

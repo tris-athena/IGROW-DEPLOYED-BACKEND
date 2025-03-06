@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './UserManagement.css';
+import Sidebar from '../Layout/Sidebar'; // Import Sidebar component
 
 const UserManagement = () => {
   const [users, setUsers] = useState([
@@ -14,32 +15,38 @@ const UserManagement = () => {
   };
 
   return (
-    <div className="user-management">
-      <h2>User Management</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Classification</th>
-            <th>Role</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map(user => (
-            <tr key={user.id}>
-              <td>{user.name}</td>
-              <td>{user.email}</td>
-              <td>{user.classification}</td>
-              <td>{user.role}</td>
-              <td>
-                <button className="delete-btn" onClick={() => handleDelete(user.id)}>Delete</button>
-              </td>
+    <div className="user-management-container">
+      {/* Sidebar */}
+      <Sidebar />
+
+      {/* Content */}
+      <div className="user-management-content">
+        <h2>User Management</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Classification</th>
+              <th>Role</th>
+              <th>Action</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {users.map(user => (
+              <tr key={user.id}>
+                <td>{user.name}</td>
+                <td>{user.email}</td>
+                <td>{user.classification}</td>
+                <td>{user.role}</td>
+                <td>
+                  <button className="delete-btn" onClick={() => handleDelete(user.id)}>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

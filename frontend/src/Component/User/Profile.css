@@ -1,15 +1,21 @@
-/* Profile.css */
+/* Set the background color for the entire page */
+body {
+  background-color: #f8f9f0;  /* Set background color to #f8f9f0 */
+  margin: 0;
+  padding: 0;
+}
 
 .profile-container {
   display: flex;
-  justify-content: space-between;
-  padding: 20px;
-  align-items: center;
+  justify-content: center;  /* Center the two boxes */
+  align-items: center;  /* Vertically center the content */
   flex-wrap: wrap;
+  width: 100%;  /* Ensure it takes up the full width of the page */
+  padding: 20px;
 }
 
 .left-container {
-  width: 45%;  /* Left side takes up 45% of the width */
+  width: 30%;  /* Reduced width of the left container */
   height: 100vh;  /* Full height of the viewport */
   background-color: #105d5e;  /* Set background color to #105d5e */
   text-align: center;
@@ -17,21 +23,24 @@
   border-radius: 8px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;  /* Space the profile picture and icons apart */
-  align-items: center;
+  justify-content: center;  /* Center the content vertically */
+  align-items: center;  /* Center the content horizontally */
+  position: relative;
+  margin-right: 50px;  /* Increased space between the left and right containers */
 }
 
 .profile-icon-container {
   display: flex;
   justify-content: center; /* Center the profile icon horizontally */
   align-items: center; /* Align profile icon vertically */
-  margin-top: 50px;  /* Add top margin to center profile icon at the top */
+  margin-top: 0;  /* Remove the top margin */
+  position: relative; /* Set relative positioning for the icon */
 }
 
 .profile-icon {
-  width: 100%;  /* Set large size for the profile icon */
-  height: 50%;
-  border-radius: 50%;
+  width: 400px;  /* Increased width of the profile image to be slightly larger */
+  height: 400px;  /* Increased height of the profile image */
+  border-radius: 50%;  /* Make it circular */
   object-fit: cover;
   border: 5px solid white;  /* Optional: Add a border around the profile icon */
 }
@@ -39,15 +48,14 @@
 .icons-container {
   display: flex;
   justify-content: center;
-  
   width: 100%;  /* Make icons container take full width */
   padding-top: 30px;
-  margin-top: auto;  /* Push the icons to the bottom of the container */
+  margin-top: 20px;  /* Ensure a gap between the profile icon and the icons */
 }
 
 .icon {
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
   cursor: pointer;
   transition: transform 0.3s ease;
 }
@@ -56,16 +64,46 @@
   transform: scale(1.1);  /* Zoom in on hover */
 }
 
+/* Styling for the Logout button */
+.logout-btn {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 10px 30px;
+  width: 60%;  /* Make the logout button a bit wider */
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s, transform 0.2s ease;
+  margin-top: 20px;  /* Reduced margin to move logout button closer */
+  margin-bottom: 20px;  /* Add margin to the bottom to keep it spaced properly */
+}
+
+.logout-btn:hover {
+  background-color: darkred;
+  transform: scale(1.1);  /* Zoom in on hover */
+}
+
+.logout-btn:focus {
+  outline: none;
+}
+
+/* Right box (form-container) - Adjusted to make it shorter and center text */
 .form-container {
-  width: 45%;  /* Right side form takes up 45% of the width */
+  width: 30%;  /* Reduced width of the form container */
   padding: 20px;
   background-color: #105d5e;  /* Set background color to #105d5e */
   color: white;  /* Make text white to contrast with the background */
   border-radius: 8px;
   display: flex;
   flex-direction: column;
-  justify-content: center;  /* Center the form content */
+  justify-content: center;  /* Center the form content vertically */
   align-items: center;
+  height: 400px;  /* Set a fixed height for the form container */
+  max-height: 100%;  /* Ensure it does not exceed the height */
+  overflow: hidden;  /* Hide any overflow */
+  margin-left: 50px;  /* Increased space between the right and left boxes */
 }
 
 .form-group {
@@ -110,35 +148,10 @@
 }
 
 .middle-image {
-  width: 250px;
-  height: 250px;
+  width: 200px;
+  height: 200px;
   object-fit: cover;
   border-radius: 8px;
-}
-
-/* Styling for the Logout button */
-.logout-btn {
-  background-color: red;
-  color: white;
-  border: none;
-  padding: 2px 30px;
-  width: 20%;
-  text-align: center;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.3s, transform 0.2s ease;
-  margin-top: 0px;
-  align-self: center;  /* Center the button within the left container */
-}
-
-.logout-btn:hover {
-  background-color: darkred;
-  transform: scale(1.1);  /* Zoom in on hover */
-}
-
-.logout-btn:focus {
-  outline: none;
 }
 
 /* Make layout responsive for smaller screens */

@@ -1,59 +1,87 @@
 /* Home.css */
 
+
+
+/* Main container */
+.home {
+  background-color: #f8f9f0 !important;
+  height: 100%;
+  display:contents;
+  align-items: center;
+  justify-content: center;
+
+}
+
+/* Default styles */
 .textLine {
-    font-size: 30px;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    color: #6d412b;
-  }
-  
-  .igrowText {
-    font-size: 150px;
-    font-weight: bold;
-    margin: 0;
-    padding: 0;
-    display: flex;
-  }
-  
-  /* Responsive Adjustments */
-  @media (max-width: 1200px) {
-    .textLine {
+  font-size: 30px;
+  margin: 0;
+  padding: 0;
+  color: #6d412b;
+  line-height: 1.2;
+}
+
+.igrowText {
+  font-size: 150px;
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+  line-height: 1.1;
+}
+
+/* Fix unwanted green border */
+* {
+  outline: none !important;
+  border: none !important;
+}
+
+/* Ensure buttons and images don't have outlines or borders */
+button, img {
+  outline: none;
+  border: none;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1200px) {
+  .textLine {
       font-size: 28px;
-    }
-  
-    .igrowText {
+  }
+
+  .igrowText {
       font-size: 130px;
-    }
   }
-  
-  @media (max-width: 992px) {
-    .textLine {
+}
+
+@media (max-width: 992px) {
+  .textLine {
       font-size: 24px;
-    }
-  
-    .igrowText {
+  }
+
+  .igrowText {
       font-size: 110px;
-    }
   }
-  
-  @media (max-width: 768px) {
-    .textLine {
+}
+
+@media (max-width: 768px) {
+  .textLine {
       font-size: 20px;
-    }
-  
-    .igrowText {
+      text-align: center;
+  }
+
+  .igrowText {
       font-size: 90px;
-    }
+      text-align: center;
   }
-  
-  @media (max-width: 576px) {
-    .textLine {
+}
+
+@media (max-width: 576px) {
+  .textLine {
       font-size: 18px;
-    }
-  
-    .igrowText {
-      font-size: 70px;
-    }
+      text-align: center;
   }
-  
+
+  .igrowText {
+      font-size: 70px;
+      text-align: center;
+  }
+}

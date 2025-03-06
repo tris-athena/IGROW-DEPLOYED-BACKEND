@@ -28,7 +28,7 @@ function Profile() {
   useEffect(() => {
     const storedUser = sessionStorage.getItem('user');
     if (storedUser) {
-      const { name, id, role } = JSON.parse(storedUser);
+      const { name, id, role, dp } = JSON.parse(storedUser);
       setName(name);
       setID(id);
       setRole(role);
@@ -38,7 +38,7 @@ function Profile() {
   // Effect to log the updated values whenever any of the state variables change
   useEffect(() => {
     console.log('Updated values from sessionStorage:', { name, id, role });
-  }, [name, id, role]); // Runs every time `name`, `id`, or `role` changes
+  }, [name, id, role]); // Runs every time name, id, or role changes
 
   return (
     <div className="profile-container">
@@ -51,11 +51,11 @@ function Profile() {
             alt="Profile"
             className="profile-icon"
           />
-          
         </div>
         <button onClick={handleLogout} className="dropdown-item logout-btn">
           Logout
         </button>
+        
         {/* Three Icons at the Bottom */}
         <div className="icons-container">
           <img src="images/logoTaguig.png" alt="Taguig Logo" className="icon" />
