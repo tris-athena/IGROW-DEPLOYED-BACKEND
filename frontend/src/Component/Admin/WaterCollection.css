@@ -1,100 +1,56 @@
-/* Set the background color for the entire page */
-body {
-    background-color: #105d5e !important; /* Page background color set to #105d5e */
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-  }
-  
-  /* Main container holding the water collection layout */
-  .water-collection-container {
-    display: flex;
-    height: 100vh;
-    width: 100%;  /* Ensure the container spans the full width */
-    background-color: #105d5e !important; /* Set the background color of the container to #105d5e */
-  }
-  
-  /* Sidebar styles */
-  .sidebar {
-    width: 250px;
-    background-color: #f8f9f0; /* Set the background color of the sidebar to #f8f9f0 */
-    padding: 20px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-  }
-  
-  .sidebar h2 {
-    font-size: 24px;
-    color: #333;
-    margin: 0;
-  }
-  
-  /* Content area styles */
-  .content {
-    flex-grow: 1;
-    padding: 20px;
-    background-color: #f8f9f0; /* Set the background color of the content area to #f8f9f0 */
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  h3 {
-    font-size: 20px;
-    margin-bottom: 20px;
-  }
-  
-  /* Table styles */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    background-color: #f8f9f0 !important; /* Set the background color of the table to #f8f9f0 */
-    color: black; /* Table text color */
-  }
-  
-  table th {
-    background-color: #f8f9f0 !important; /* Set table header background color */
-    color: black; /* Ensure table header text color is black */
-  }
-  
-  table td {
-    background-color: #f8f9f0 !important; /* Set table content cells background color */
-    border: 1px solid #000000;
-    padding: 12px;
-    text-align: left;
-  }
-  
-  /* Button styles */
-  button {
-    background-color: #f44336;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #d32f2f;
-  }
-  
-  /* Input, textareas, and select elements */
-  input, textarea, select {
-    background-color: #f8f9f0;  /* Set the background color of input fields */
-    border: 1px solid #f8f9f0;  /* Add a light border */
-    padding: 10px;
-    margin-bottom: 10px;  /* Add margin between input fields */
-    border-radius: 5px;
-    width: 100%;  /* Make the input fields take up the full width */
-    box-sizing: border-box;  /* Include padding and border in width calculation */
-  }
-  
-  /* Focus effect for input fields */
-  input:focus, textarea:focus, select:focus {
-    border-color: #105d5e;  /* Change border color on focus */
-    outline: none;  /* Remove the default outline */
-  }
-  
+/* Add styles for the modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button {
+  margin-top: 10px;
+}
+
+button[type="submit"], button[type="button"] {
+  margin-right: 10px;
+}
+
+/* Flexbox container to align header elements */
+.header {
+  display: flex;
+  justify-content: space-between; /* This will push the h2 to the left and button to the right */
+  align-items: center; /* Vertically center-aligns the items */
+  margin-bottom: 20px; /* Add some space below the header */
+}
+
+h2 {
+  margin: 0; /* Remove default margin from h2 */
+}
+
+.create-button {
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.create-button:hover {
+  background-color: #45a049;
+}

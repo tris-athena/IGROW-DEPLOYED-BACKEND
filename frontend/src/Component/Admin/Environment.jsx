@@ -11,7 +11,7 @@ const Environment = () => {
   const [newTemperature, setNewTemperature] = useState('');
   const [newHumidity, setNewHumidity] = useState('');
 
-  // Fetch water collection records from the backend
+  // Fetch environment records from the backend
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -37,9 +37,9 @@ const Environment = () => {
     }
   };
 
-  // Handle Create button click to toggle form visibility
+  // Handle Create button click to toggle form visibility (modal)
   const handleCreate = () => {
-    setShowCreateForm(!showCreateForm);
+    setShowCreateForm(true);
   };
 
   // Handle form submission to create a new record
@@ -78,36 +78,44 @@ const Environment = () => {
     <div className="environment-container">
       <Sidebar />
       <div className="content">
-        <h2>Environment Records
+        {/* Header with left-aligned title and right-aligned create button */}
+        <div className="header">
+          <h2>Environment Records</h2>
           <button className="create-button" onClick={handleCreate}>Create</button>
-        </h2>
+        </div>
 
         {loading && <p>Loading...</p>}
         {error && <p style={{ color: 'red' }}>{error}</p>}
 
+        {/* Modal for Creating Environment Record */}
         {showCreateForm && (
-          <form onSubmit={handleSubmit}>
-            <div>
-              <label>Temperature:</label>
-              <input
-                type="text"
-                value={newTemperature}
-                onChange={(e) => setNewTemperature(e.target.value)}
-                required
-              />
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <h3>Create Environment Record</h3>
+              <form onSubmit={handleSubmit}>
+                <div>
+                  <label>Temperature:</label>
+                  <input
+                    type="text"
+                    value={newTemperature}
+                    onChange={(e) => setNewTemperature(e.target.value)}
+                    required
+                  />
+                </div>
+                <div>
+                  <label>Humidity:</label>
+                  <input
+                    type="text"
+                    value={newHumidity}
+                    onChange={(e) => setNewHumidity(e.target.value)}
+                    required
+                  />
+                </div>
+                <button type="submit">Submit</button>
+                <button type="button" onClick={() => setShowCreateForm(false)}>Cancel</button>
+              </form>
             </div>
-            <div>
-              <label>HUmidity:</label>
-              <input
-                type="text"
-                value={newHumidity}
-                onChange={(e) => setNewHumidity(e.target.value)}
-                required
-              />
-            </div>
-            <button type="submit">Submit</button>
-            <button type="button" onClick={() => setShowCreateForm(false)}>Cancel</button>
-          </form>
+          </div>
         )}
 
         <table>
@@ -115,7 +123,7 @@ const Environment = () => {
             <tr>
               <th>Temperature</th>
               <th>Humidity</th>
-              <th>Created At</th> {/* Add a column for createdAt */}
+              <th>Created At</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -124,7 +132,7 @@ const Environment = () => {
               <tr key={entry._id}>
                 <td>{entry.Temperature}</td>
                 <td>{entry.Humidity}</td>
-                <td>{new Date(entry.createdAt).toLocaleString()}</td> {/* Format the createdAt field */}
+                <td>{new Date(entry.createdAt).toLocaleString()}</td>
                 <td>
                   <button onClick={() => deleteEntry(entry._id)}>Delete</button>
                 </td>
@@ -138,4 +146,3 @@ const Environment = () => {
 };
 
 export default Environment;
-  

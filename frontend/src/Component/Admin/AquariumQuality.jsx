@@ -36,9 +36,9 @@ const AquariumQuality = () => {
     }
   };
 
-  // Handle Create button click to toggle form visibility
+  // Handle Create button click to toggle form visibility (modal)
   const handleCreate = () => {
-    setShowCreateForm(!showCreateForm);
+    setShowCreateForm(true);
   };
 
   // Handle form submission to create a new record
@@ -76,34 +76,42 @@ const AquariumQuality = () => {
     <div className="aquarium-quality-container">
       <Sidebar />
       <div className="content">
-        <h2>Aquarium Quality Records
+        {/* Header with left-aligned title and right-aligned create button */}
+        <div className="header">
+          <h2>Aquarium Quality Records</h2>
           <button className="create-button" onClick={handleCreate}>Create</button>
-        </h2>
+        </div>
 
         {loading && <p>Loading...</p>}
         {error && <p style={{ color: 'red' }}>{error}</p>}
 
+        {/* Modal for Creating Aquarium Quality */}
         {showCreateForm && (
-          <form onSubmit={handleSubmit}>
-            <div>
-              <label>ph Level:</label>
-              <input
-                type="text"
-                value={newphLevel}
-                onChange={(e) => setNewphLevel(e.target.value)}
-                required
-              />
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <h3>Create Aquarium Quality</h3>
+              <form onSubmit={handleSubmit}>
+                <div>
+                  <label>pH Level:</label>
+                  <input
+                    type="text"
+                    value={newphLevel}
+                    onChange={(e) => setNewphLevel(e.target.value)}
+                    required
+                  />
+                </div>
+                <button type="submit">Submit</button>
+                <button type="button" onClick={() => setShowCreateForm(false)}>Cancel</button>
+              </form>
             </div>
-            <button type="submit">Submit</button>
-            <button type="button" onClick={() => setShowCreateForm(false)}>Cancel</button>
-          </form>
+          </div>
         )}
 
         <table>
           <thead>
             <tr>
-              <th>ph Level</th>
-              <th>Created At</th> {/* Add a column for createdAt */}
+              <th>pH Level</th>
+              <th>Created At</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -111,7 +119,7 @@ const AquariumQuality = () => {
             {data.map((entry) => (
               <tr key={entry._id}>
                 <td>{entry.phLevel}</td>
-                <td>{new Date(entry.createdAt).toLocaleString()}</td> {/* Format the createdAt field */}
+                <td>{new Date(entry.createdAt).toLocaleString()}</td>
                 <td>
                   <button onClick={() => deleteEntry(entry._id)}>Delete</button>
                 </td>
@@ -125,4 +133,3 @@ const AquariumQuality = () => {
 };
 
 export default AquariumQuality;
-  

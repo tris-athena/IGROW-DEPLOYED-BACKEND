@@ -36,9 +36,9 @@ const WaterDrain = () => {
     }
   };
 
-  // Handle Create button click to toggle form visibility
+  // Handle Create button click to toggle form visibility (modal)
   const handleCreate = () => {
-    setShowCreateForm(!showCreateForm);
+    setShowCreateForm(true);
   };
 
   // Handle form submission to create a new record
@@ -76,37 +76,45 @@ const WaterDrain = () => {
     <div className="water-drain-container">
       <Sidebar />
       <div className="content">
-        <h2>Water Drain Records
+        {/* Header with left-aligned title and right-aligned create button */}
+        <div className="header">
+          <h2>Water Drain Records</h2>
           <button className="create-button" onClick={handleCreate}>Create</button>
-        </h2>
+        </div>
 
         {loading && <p>Loading...</p>}
         {error && <p style={{ color: 'red' }}>{error}</p>}
 
+        {/* Modal for Creating Water Drain Record */}
         {showCreateForm && (
-          <form onSubmit={handleSubmit}>
-            <div>
-              <label>State:</label>
-              <select
-                value={newstate}
-                onChange={(e) => setNewstate(e.target.value)}
-                required
-              >
-                <option value="">Select State</option>
-                <option value="on">On</option>
-                <option value="off">Off</option>
-              </select>
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <h3>Create Water Drain Record</h3>
+              <form onSubmit={handleSubmit}>
+                <div>
+                  <label>State:</label>
+                  <select
+                    value={newstate}
+                    onChange={(e) => setNewstate(e.target.value)}
+                    required
+                  >
+                    <option value="">Select State</option>
+                    <option value="on">On</option>
+                    <option value="off">Off</option>
+                  </select>
+                </div>
+                <button type="submit">Submit</button>
+                <button type="button" onClick={() => setShowCreateForm(false)}>Cancel</button>
+              </form>
             </div>
-            <button type="submit">Submit</button>
-            <button type="button" onClick={() => setShowCreateForm(false)}>Cancel</button>
-          </form>
+          </div>
         )}
 
         <table>
           <thead>
             <tr>
               <th>State</th>
-              <th>Created At</th> {/* Add a column for createdAt */}
+              <th>Created At</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -114,7 +122,7 @@ const WaterDrain = () => {
             {data.map((entry) => (
               <tr key={entry._id}>
                 <td>{entry.state}</td>
-                <td>{new Date(entry.createdAt).toLocaleString()}</td> {/* Format the createdAt field */}
+                <td>{new Date(entry.createdAt).toLocaleString()}</td>
                 <td>
                   <button onClick={() => deleteEntry(entry._id)}>Delete</button>
                 </td>
