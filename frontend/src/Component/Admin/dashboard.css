@@ -8,7 +8,7 @@ body, html {
 
 /* Content area */
 .content {
-    padding: 20px;
+    /* padding: 20px; */
     margin-top: 0; /* Ensure no margin on top */
     transition: margin-left 0.3s ease-in-out; /* Smooth transition */
 }

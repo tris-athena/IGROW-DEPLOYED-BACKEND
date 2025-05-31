@@ -1,0 +1,126 @@
+.fish-feeding-page {
+  display: flex;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.create-button,
+.submit-button,
+.cancel-button,
+.delete-button {
+  padding: 8px 12px;
+  margin: 4px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.create-button {
+  background-color: #007bff;
+  color: white;
+}
+
+.delete-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+.submit-button {
+  background-color: #28a745;
+  color: white;
+}
+
+.cancel-button {
+  background-color: #6c757d;
+  color: white;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.grid-header {
+  font-weight: bold;
+  background-color: #f1f1f1;
+  padding: 10px;
+}
+
+.grid-item {
+  padding: 10px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  min-width: 300px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
+  gap: 1px;
+  border: 1px solid #ccc;
+  background-color: #ccc;
+  margin-top: 20px;
+}
+
+.grid-header {
+  background-color: #f5f5f5;
+  font-weight: bold;
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+.grid-item {
+  background-color: #fff;
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+.delete-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}

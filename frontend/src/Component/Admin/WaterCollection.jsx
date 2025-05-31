@@ -11,7 +11,6 @@ const WaterCollection = () => {
   const [newWaterSource, setNewWaterSource] = useState('');
   const [newWaterLevel, setNewWaterLevel] = useState('');
 
-  // Fetch water collection records from the backend
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -27,7 +26,6 @@ const WaterCollection = () => {
     fetchData();
   }, []);
 
-  // Delete a record from the backend
   const deleteEntry = async (id) => {
     try {
       await axios.delete(`http://localhost:4001/api/v1/water-collections/${id}`);
@@ -37,15 +35,12 @@ const WaterCollection = () => {
     }
   };
 
-  // Handle Create button click to show the modal
   const handleCreate = () => {
     setShowCreateForm(true);
   };
 
-  // Handle form submission to create a new record
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!newWaterSource || !newWaterLevel) {
       setError('Please fill in all fields');
       return;
@@ -53,24 +48,17 @@ const WaterCollection = () => {
 
     try {
       const newRecord = { WaterSource: newWaterSource, WaterLevel: newWaterLevel };
-
-      console.log('Sending data to the backend:', newRecord); // Log to ensure data is correct
-
       await axios.post('http://localhost:4001/api/v1/wc-create', newRecord);
 
-      // Reset form fields and hide form after successful submission
       setNewWaterSource('');
       setNewWaterLevel('');
       setShowCreateForm(false);
 
-      // Fetch updated data
       const response = await axios.get('http://localhost:4001/api/v1/water-collections');
       setData(response.data);
-
-      setError(null); // Clear error message if any
+      setError(null);
     } catch (err) {
       setError('Failed to create new record');
-      console.error('Error during record creation:', err);
     }
   };
 
@@ -78,15 +66,14 @@ const WaterCollection = () => {
     <div className="water-collection-container">
       <Sidebar />
       <div className="content">
-      <div className="header">
-    <h2>Water Collection Records</h2>
-    <button className="create-button" onClick={handleCreate}>Create</button>
-  </div>
+        <div className="header">
+          <h2>Water Collection Records</h2>
+          <button className="create-button" onClick={handleCreate}>Create</button>
+        </div>
 
         {loading && <p>Loading...</p>}
         {error && <p style={{ color: 'red' }}>{error}</p>}
 
-        {/* Modal for Creating Water Collection */}
         {showCreateForm && (
           <div className="modal-overlay">
             <div className="modal-content">
@@ -111,12 +98,7 @@ const WaterCollection = () => {
                   />
                 </div>
                 <button type="submit">Submit</button>
-                <button
-                  type="button"
-                  onClick={() => setShowCreateForm(false)} // Close modal on cancel
-                >
-                  Cancel
-                </button>
+                <button type="button" onClick={() => setShowCreateForm(false)}>Cancel</button>
               </form>
             </div>
           </div>
@@ -138,7 +120,7 @@ const WaterCollection = () => {
                 <td>{entry.WaterLevel}</td>
                 <td>{new Date(entry.createdAt).toLocaleString()}</td>
                 <td>
-                  <button onClick={() => deleteEntry(entry._id)}>Delete</button>
+                  <button className="delete-btn" onClick={() => deleteEntry(entry._id)}>Delete</button>
                 </td>
               </tr>
             ))}

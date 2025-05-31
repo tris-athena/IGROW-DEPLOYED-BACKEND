@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './WaterDrain.css';
+import './WaterDrain.css'; // Make sure this path is correct
 import Sidebar from '../Layout/Sidebar';
 
 const WaterDrain = () => {
@@ -10,7 +10,6 @@ const WaterDrain = () => {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [newstate, setNewstate] = useState('');
 
-  // Fetch water drain records from the backend
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -26,7 +25,6 @@ const WaterDrain = () => {
     fetchData();
   }, []);
 
-  // Delete a record from the backend
   const deleteEntry = async (id) => {
     try {
       await axios.delete(`http://localhost:4001/api/v1/water-drain/${id}`);
@@ -36,47 +34,41 @@ const WaterDrain = () => {
     }
   };
 
-  // Handle Create button click to toggle form visibility (modal)
   const handleCreate = () => {
     setShowCreateForm(true);
   };
 
-  // Handle form submission to create a new record
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!newstate) {
-        setError('Please fill in all fields');
-        return;
+      setError('Please fill in all fields');
+      return;
     }
 
     try {
-        const newRecord = { state: newstate };
-        
-        console.log('Sending data to the backend:', newRecord); // Log to ensure data is correct
+      const newRecord = { state: newstate };
 
-        await axios.post('http://localhost:4001/api/v1/wd-create', newRecord);
+      await axios.post('http://localhost:4001/api/v1/wd-create', newRecord);
 
-        // Reset form fields and hide form after successful submission
-        setNewstate('');
-        setShowCreateForm(false);
+      setNewstate('');
+      setShowCreateForm(false);
 
-        // Fetch updated data
-        const response = await axios.get('http://localhost:4001/api/v1/water-drain');
-        setData(response.data);
+      const response = await axios.get('http://localhost:4001/api/v1/water-drain');
+      setData(response.data);
 
-        setError(null); // Clear error message if any
+      setError(null);
     } catch (err) {
-        setError('Failed to create new record');
-        console.error('Error during record creation:', err);
+      setError('Failed to create new record');
+      console.error('Error during record creation:', err);
     }
-};
+  };
 
   return (
-    <div className="water-drain-container">
+    <div className="water-collection-container">
       <Sidebar />
       <div className="content">
-        {/* Header with left-aligned title and right-aligned create button */}
+        {/* Header */}
         <div className="header">
           <h2>Water Drain Records</h2>
           <button className="create-button" onClick={handleCreate}>Create</button>
@@ -85,13 +77,13 @@ const WaterDrain = () => {
         {loading && <p>Loading...</p>}
         {error && <p style={{ color: 'red' }}>{error}</p>}
 
-        {/* Modal for Creating Water Drain Record */}
+        {/* Modal */}
         {showCreateForm && (
           <div className="modal-overlay">
             <div className="modal-content">
               <h3>Create Water Drain Record</h3>
               <form onSubmit={handleSubmit}>
-                <div>
+                <div className="form-group">
                   <label>State:</label>
                   <select
                     value={newstate}
@@ -103,13 +95,16 @@ const WaterDrain = () => {
                     <option value="off">Off</option>
                   </select>
                 </div>
-                <button type="submit">Submit</button>
-                <button type="button" onClick={() => setShowCreateForm(false)}>Cancel</button>
+                <div className="button-group">
+                  <button type="submit" className="submit-button">Submit</button>
+                  <button type="button" className="cancel-button" onClick={() => setShowCreateForm(false)}>Cancel</button>
+                </div>
               </form>
             </div>
           </div>
         )}
 
+        {/* Table */}
         <table>
           <thead>
             <tr>
@@ -124,7 +119,7 @@ const WaterDrain = () => {
                 <td>{entry.state}</td>
                 <td>{new Date(entry.createdAt).toLocaleString()}</td>
                 <td>
-                  <button onClick={() => deleteEntry(entry._id)}>Delete</button>
+                  <button className="delete-btn" onClick={() => deleteEntry(entry._id)}>Delete</button>
                 </td>
               </tr>
             ))}

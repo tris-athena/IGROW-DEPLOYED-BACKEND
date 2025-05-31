@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { toast, ToastContainer } from "react-toastify";  // Ensure correct import
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from 'react-router-dom';
 
@@ -15,105 +15,79 @@ const Landing = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [image, setImage] = useState(null);
+  const [images, setImages] = useState([]);
   const [name, setName] = useState(null);
   const [emails, setEmail] = useState(""); // Default to empty string
-  const [images, setImages] = useState([]);
-  const [success, setSuccess] = useState("");
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true); // State to track loading
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const [imagePreview, setImagePreview] = useState("");
-  const [loading, setLoading] = useState(true); // State to track loading
-  const [error, setError] = useState(null);
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    email: "",
-  });
+  const [success, setSuccess] = useState("");
 
-  // Fetch user profile data when the component mounts
+  // Fetch posts for user email
   const fetchPosts = async () => {
+    if (!emails) {
+      setLoading(false);
+      return;
+    }
     try {
-      // Fetch posts using the user's email
-      if (emails) {
-        const api = emails;
-        console.log(api)
-        const postResponse = await axios.get(`http://localhost:4001/api/v1/post/${api}`);
+      const response = await axios.get(`http://localhost:4001/api/v1/post/${emails}`);
+      const responseData = response.data;
 
-        console.log('Raw response:', postResponse.data);
-
-        const responseData = postResponse.data;
-
-        // Check if the response contains posts and is in the expected format
-        if (responseData.success && Array.isArray(responseData.posts)) {
-          const postsArray = responseData.posts;
-          console.log('Posts Array:', postsArray); // Log the raw posts array
-
-          // Sort posts in descending order by createdAt
-          const sortedPosts = postsArray.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-          setPosts(sortedPosts.slice(0, 3)); // Update state with sorted posts (slice to get the 2 most recent)
-        } else {
-          console.log('No posts or incorrect format');
-        }
+      if (responseData.success && Array.isArray(responseData.posts)) {
+        const sortedPosts = responseData.posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        setPosts(sortedPosts.slice(0, 3)); // Get latest 3 posts
       } else {
-        console.log('User email not found in session storage');
+        setPosts([]);
       }
     } catch (error) {
       console.error('Error fetching posts:', error);
+      setError("Failed to fetch posts");
     } finally {
-      setLoading(false); // Set loading to false after fetching data
+      setLoading(false);
     }
   };
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      // Set the preview of the selected image
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      setImages(files);
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result); // Set the image preview URL
-      };
-      reader.readAsDataURL(file);
-      setImages(e.target.files); // Set the selected files
+      reader.onloadend = () => setImagePreview(reader.result);
+      reader.readAsDataURL(files[0]);
     }
   };
 
-  // Handle post creation
-  const handlePost = async (formData) => {
+  const handlePost = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
-
-      const config = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      };
       const user = JSON.parse(sessionStorage.getItem("user"));
-      const email = user ? user.emailuser : null;
-      const data = new FormData();
-      data.set("title", title);
-      data.set("description", description);
-      data.set("email", email);
-      Array.from(images).forEach((image, index) => {
-        data.append('images', image, `image_${index}.jpg`);
+      const email = user?.emailuser || "";
+
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("description", description);
+      formData.append("email", email);
+      Array.from(images).forEach((image, idx) => {
+        formData.append('images', image, `image_${idx}.jpg`);
       });
 
-      const response = await axios.post("http://localhost:4001/api/v1/post-create", data, config);
-      setLoading(false);
+      await axios.post("http://localhost:4001/api/v1/post-create", formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+      });
+
       setSuccess("Posted Successfully");
+      toast.success("Posted successfully!", { position: "bottom-right" });
       navigate('/landing');
-      toast.success("Posted successfully!", {
-        position: "bottom-right",  // Hardcoded position string for testing
-      });
-
-      closeModal(); // Close the modal after posting
+      closeModal();
     } catch (error) {
+      const message = error.response?.data?.message || "Something went wrong";
+      setError(message);
+      toast.error(message, { position: "bottom-right" });
+    } finally {
       setLoading(false);
-      setError(error.response?.data?.message || "Something went wrong");
-      toast.error(error.message, {
-        position: "bottom-right",  // Hardcoded position string for testing
-      });
     }
   };
 
@@ -122,33 +96,42 @@ const Landing = () => {
     setIsModalOpen(false);
     setTitle('');
     setDescription('');
-    setImage(null);
+    setImages([]);
+    setImagePreview('');
   };
 
   useEffect(() => {
     const user = JSON.parse(sessionStorage.getItem("user"));
     if (user) {
       setEmail(user.emailuser);
-      setImage(user.dp);
       setName(user.name);
     }
+  }, []);
+
+  useEffect(() => {
     fetchPosts();
-  }, [emails]); // Use 'emails' dependency to refetch posts when the email changes
+  }, [emails]);
 
   return (
     <div style={styles.pageContainer}>
+      {/* Header with styled iGROW */}
+      <div style={styles.headerText}>
+        dual-source aquaponics{' '}
+        <span style={{ color: '#105d5e', fontWeight: 'bold' }}>iGROW</span>
+      </div>
+
       {/* User Profile and Create Post Button */}
       <div style={styles.textBox}>
         <div style={styles.profileSection}>
           <div style={styles.profileBox}>
             <img
-              src={image || 'https://via.placeholder.com/100'}
-              alt={userProfile.name || 'User'}
+              src={userProfile.profileImage || 'https://via.placeholder.com/100'}
+              alt={name || 'User'}
               style={styles.profileImage}
             />
             <div style={styles.profileDetails}>
               <h3 style={styles.profileName}>
-                {loading ? 'Loading...' : name}
+                {loading ? 'Loading...' : name || userProfile.name}
               </h3>
             </div>
           </div>
@@ -170,11 +153,11 @@ const Landing = () => {
                   <p style={styles.postDescription}>{post.description}</p>
                   {post.images && post.images.length > 0 && (
                     <div style={styles.imageContainer}>
-                      {post.images.map((image, i) => (
+                      {post.images.map((img, i) => (
                         <img
                           key={i}
-                          src={image.url || 'https://via.placeholder.com/150'}  // Check if 'image.url' exists
-                          alt={`Image ${i}`}
+                          src={img.url || 'https://via.placeholder.com/150'}
+                          alt={`Post image ${i}`}
                           style={styles.postImage}
                         />
                       ))}
@@ -212,90 +195,44 @@ const Landing = () => {
               style={styles.textareaField}
             />
             <label htmlFor="imageUpload">Upload Image</label>
-            <input type="file" id="imageUpload" onChange={handleImageChange} />
+            <input type="file" id="imageUpload" onChange={handleImageChange} multiple />
+            {imagePreview && (
+              <img
+                src={imagePreview}
+                alt="Preview"
+                style={{ marginTop: '10px', maxWidth: '100%', borderRadius: '8px' }}
+              />
+            )}
             <div style={styles.modalActions}>
               <button onClick={closeModal} style={styles.cancelButton}>Cancel</button>
-              <button onClick={handlePost} style={styles.postButton}>Post</button>
+              <button onClick={handlePost} style={styles.postButton} disabled={loading}>
+                {loading ? 'Posting...' : 'Post'}
+              </button>
             </div>
           </div>
         </div>
       )}
+
+      {/* Toast Notifications */}
+      <ToastContainer />
     </div>
   );
 };
 
 const styles = {
-  recentPostSection: {
-    padding: '20px',
-    border: '1px solid #ddd',
-    borderRadius: '8px',
-    marginBottom: '20px',
-  },
-  recentPostHeading: {
-    fontSize: '24px',
-    marginBottom: '20px',
-  },
-  recentPostsList: {
-    listStyleType: 'none',
-    padding: 0,
-    display: 'flex',
-    flexDirection: 'row', // Stack posts vertically
-    gap: '40px', // Space between cards
-  },
-  postCard: {
-    backgroundColor: '#fff',
-    borderRadius: '8px',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-    padding: '20px',
-    width: '100%',
-    maxWidth: '400px', // Limit the width of each card
-    margin: '0 auto', // Center align cards
-    display: 'flex',
-    flexDirection: 'column', // Allow flexibility in height and content
-    justifyContent: 'space-between', // Spread the content evenly
-  },
-  cardContent: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '15px',
-    flexGrow: 1, // Allow the content to grow and fill available space
-  },
-  postTitle: {
-    fontSize: '20px',
-    fontWeight: 'bold',
-    margin: 0,
-    overflow: 'hidden', // Hide any overflow text
-    textOverflow: 'ellipsis', // Use ellipsis for overflow text
-    whiteSpace: 'nowrap', // Prevent wrapping the title into new lines
-  },
-  postDescription: {
-    fontSize: '16px',
-    color: '#555',
-    wordWrap: 'break-word', // Ensure the text wraps properly when it exceeds the container's width
-    overflow: 'hidden', // Prevent overflow of content
-    textOverflow: 'ellipsis', // Use ellipsis for overflow text
-  },
-  imageContainer: {
-    display: 'flex',
-    gap: '10px',
-    flexDirection: 'row', // Display images side by side
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    alignItems: 'center', // Allow images to wrap if there's more than one
-  },
-  postImage: {
-    width: '100%', // Ensure images take full width of their container
-    maxWidth: '150px', // Limit the max width of each image
-    height: 'auto',
-    borderRadius: '4px',
-  },
   pageContainer: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     padding: '20px',
-    backgroundColor: '#f8f9f0',  // Updated background color here
+    backgroundColor: '#f8f9f0',
     minHeight: '100vh',
+  },
+  headerText: {
+    fontSize: '28px',
+    fontWeight: 'normal',
+    marginBottom: '30px',
+    color: '#000',
   },
   textBox: {
     width: '80%',
@@ -320,6 +257,7 @@ const styles = {
     width: '80px',
     height: '80px',
     borderRadius: '50%',
+    objectFit: 'cover',
   },
   profileDetails: {
     display: 'flex',
@@ -328,6 +266,7 @@ const styles = {
   profileName: {
     fontSize: '20px',
     fontWeight: 'bold',
+    margin: 0,
   },
   createPostButton: {
     padding: '8px 15px',
@@ -338,17 +277,81 @@ const styles = {
     cursor: 'pointer',
     marginTop: '10px',
   },
-
+  recentPostSection: {
+    width: '80%',
+    padding: '20px',
+    border: '1px solid #ddd',
+    borderRadius: '8px',
+    marginBottom: '20px',
+  },
+  recentPostHeading: {
+    fontSize: '24px',
+    marginBottom: '20px',
+  },
+  recentPostsList: {
+    listStyleType: 'none',
+    padding: 0,
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '40px',
+  },
+  postCard: {
+    backgroundColor: '#fff',
+    borderRadius: '8px',
+    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+    padding: '20px',
+    width: '100%',
+    maxWidth: '400px',
+    margin: '0 auto',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
+  cardContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '15px',
+    flexGrow: 1,
+  },
+  postTitle: {
+    fontSize: '20px',
+    fontWeight: 'bold',
+    margin: 0,
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
+  postDescription: {
+    fontSize: '16px',
+    color: '#555',
+    wordWrap: 'break-word',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+  },
+  imageContainer: {
+    display: 'flex',
+    gap: '10px',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  postImage: {
+    width: '100%',
+    maxWidth: '150px',
+    height: 'auto',
+    borderRadius: '4px',
+  },
   modal: {
     display: 'flex',
     position: 'fixed',
-    top: '0',
-    left: '0',
+    top: 0,
+    left: 0,
     width: '100%',
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    zIndex: 1000,
   },
   modalContent: {
     backgroundColor: 'white',

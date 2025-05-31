@@ -1,46 +1,139 @@
-/* src/Component/Admin/WaterSupply.css */
-
+/* Page container & layout */
 .water-supply-container {
-    padding: 20px;
-    background-color: #f4f4f9;
-    color: #333;
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8f9f0;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+}
+
+/* Header: Title left, create button right */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header-container h2 {
+  margin: 0;
+  font-weight: 700;
+  color: #2f4f2f;
+}
+
+/* Create button style */
+.create-button {
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.create-button:hover {
+  background-color: #45a049;
+}
+
+/* Grid container as table */
+.grid-container {
+  display: grid;
+  grid-template-columns: 150px 100px 150px 150px 100px;
+  gap: 10px 20px;
+  align-items: center;
+  background-color: white;
+  padding: 15px;
+  border-radius: 6px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Headers */
+.grid-header {
+  font-weight: 700;
+  border-bottom: 2px solid #4caf50;
+  padding-bottom: 6px;
+  color: #2f4f2f;
+}
+
+/* Grid items */
+.grid-item {
+  padding: 8px 0;
+  border-bottom: 1px solid #ddd;
+  color: #333;
+}
+
+/* Last row items have no bottom border */
+.grid-item:nth-last-child(-n + 5) {
+  border-bottom: none;
+}
+
+/* Delete button */
+.delete-button {
+  background-color: #e74c3c;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+  background-color: #c0392b;
+}
+
+/* ======= Your modal & form styling ======= */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px 30px;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+/* Form group layout */
+.form-group {
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* Center the select box and its options */
+.form-group select {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  text-align: center;
+  text-align-last: center;
+}
+
+/* Optional: inputs centered too */
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  text-align: center;
+}
+
+h2 {
+    text-align: left;
+    margin-bottom: 0px;
   }
-  
-  .water-supply-container h2 {
-    color: #4CAF50;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  th, td {
-    padding: 10px;
-    text-align: center;
-    border: 1px solid #ddd;
-  }
-  
-  th {
-    background-color: #4CAF50;
-    color: white;
-  }
-  
-  td {
-    background-color: #fff;
-  }
-  
-  button {
-    padding: 5px 10px;
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #c0392b;
-  }
-  

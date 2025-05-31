@@ -2,65 +2,119 @@ import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import '../../CSS/Header.css';
 import axios from 'axios';
+import {
+  FaBars,
+  FaTachometerAlt,
+  FaWater,
+  FaFilter,
+  FaRecycle,
+  FaFish,
+  FaSolarPanel,
+  FaUsers,
+  FaHome,
+  FaSignOutAlt,
+} from 'react-icons/fa';
 
 function Header() {
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [isSidebarVisible, setSidebarVisible] = useState(false);
   const navigate = useNavigate();
 
-  const isLoggedIn = sessionStorage.getItem('user'); // Check sessionStorage for login state
+  const isLoggedIn = sessionStorage.getItem('user');
+  const toggleSidebar = () => setSidebarVisible(!isSidebarVisible);
 
   const handleLoginHover = () => setShowLoginForm(true);
   const handleLoginHoverOut = () => setShowLoginForm(false);
 
-  // Handle form submission for login
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const response = await axios.post('http://localhost:4001/api/v1/login', { email, password });
-      
-      // Log the response data to check the role
-      console.log('Login response:', response.data);
-  
-      sessionStorage.setItem('user', JSON.stringify(response.data)); // Store user info in sessionStorage
-  
+      sessionStorage.setItem('user', JSON.stringify(response.data));
       const user = response.data;
-  
-      // Check user role and redirect accordingly
+
       if (user.role === 'admin') {
-        console.log('Redirecting to dashboard...');
-        navigate('/admin/dashboard'); // Redirect to dashboard if admin
+        navigate('/admin/dashboard');
       } else {
-        console.log('Redirecting to landing...');
-        navigate('/landing'); // Redirect to landing page for regular user
+        navigate('/landing');
       }
-  
-      // Clear form fields after successful login
+
       setEmail('');
       setPassword('');
     } catch (error) {
       setErrorMessage(error.response ? error.response.data.message : 'Login Failed. Please try again.');
     }
   };
-  
 
   const handleLogoClick = () => {
     if (isLoggedIn) {
-      navigate('/landing'); // Redirect to landing page if logged in
+      navigate('/landing');
     } else {
-      navigate('/'); // Redirect to homepage if not logged in
+      navigate('/');
     }
+  };
+
+  const navItems = [
+    { label: 'Dashboard', path: '/admin/dashboard', icon: <FaTachometerAlt className="sidebar-icon" /> },
+    { label: 'Water Collection', path: '/admin/water-collection', icon: <FaWater className="sidebar-icon" /> },
+    { label: 'Water Supply', path: '/admin/water-supply', icon: <FaWater className="sidebar-icon" /> },
+    { label: 'Water Filtration', path: '/admin/water-filtration', icon: <FaFilter className="sidebar-icon" /> },
+    { label: 'Water Drain', path: '/admin/water-drain', icon: <FaRecycle className="sidebar-icon" /> },
+    { label: 'Fish Feeding', path: '/admin/fish-feeding', icon: <FaFish className="sidebar-icon" /> },
+    { label: 'Solar Power', path: '/admin/solar-panel', icon: <FaSolarPanel className="sidebar-icon" /> },
+    { label: 'User Management', path: '/admin/user-management', icon: <FaUsers className="sidebar-icon" /> },
+    { label: 'Home', path: '/', icon: <FaHome className="sidebar-icon" /> },
+    { label: 'Logout', path: '/login', icon: <FaSignOutAlt className="sidebar-icon" /> },
+  ];
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('user'); // Clear user data from sessionStorage
+    navigate("/"); // Navigate to the home page after logout
   };
 
   return (
     <div className="header-container">
+      {/* Sidebar toggle button */}
+      {isLoggedIn && JSON.parse(isLoggedIn)?.role === 'admin' && (
+        <>
+          <div className="sidebar-toggle" onClick={toggleSidebar}>
+            <FaBars size={24} />
+          </div>
+          <div className={`sidebar ${isSidebarVisible ? 'active' : ''}`}>
+            <div className="sidebar-header">
+              <img src="/images/logoIGROW.png" alt="iGROW Logo" className="logo" />
+              <span className="logo-text">iGROW</span>
+            </div>
+
+            <ul>
+              {navItems.map(({ label, path, icon }) => (
+                <li key={path} onClick={path === "/login" ? () => handleLogout() : () => {
+                  navigate(path)
+
+                }}>
+                  <NavLink
+                    to={path}
+                    className={({ isActive }) =>
+                      isActive ? 'sidebar-link sidebar-link-active' : 'sidebar-link'
+                    }
+                  >
+                    {icon}
+                    {label}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </>
+      )}
+
       <header className="header">
         <div className="logo-section">
-          {/* Replace the anchor tag with a div and handle click with a function */}
           <div onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
-            <img src="images\logoIGROW.png" alt="iGROW Logo" className="logo" />
+            <img src="/images/logoIGROW.png" alt="iGROW Logo" className="logo" />
           </div>
           <div className="website-name">
             <h2 className="website-name__main">iGROW</h2>
@@ -72,7 +126,7 @@ function Header() {
           <ul className="nav-links">
             <li>
               <NavLink
-                to={isLoggedIn ? "/landing" : "/"} // Redirect to landing page if logged in, else to default home
+                to={isLoggedIn ? "/landing" : "/"}
                 className={({ isActive }) => (isActive ? 'nav-link active-link' : 'nav-link')}
               >
                 Home
@@ -86,18 +140,10 @@ function Header() {
           </ul>
         </nav>
 
-        {/* Login/Profile button wrapper */}
-        <div
-          className="login-wrapper"
-          onMouseEnter={handleLoginHover}
-          onMouseLeave={handleLoginHoverOut}
-        >
+        <div className="login-wrapper" onMouseEnter={handleLoginHover} onMouseLeave={handleLoginHoverOut}>
           {!isLoggedIn ? (
             <>
-              <a href="#login" className="login-button">
-                LOGIN
-              </a>
-              {/* Conditionally render the login form when hovered */}
+              <a href="#login" className="login-button">LOGIN</a>
               {showLoginForm && (
                 <div className="login-form">
                   <h2>LOGIN</h2>
@@ -135,10 +181,7 @@ function Header() {
                 </div>
               )}
             </>
-          ) : (
-            // Only show login button when not logged in
-            <></>
-          )}
+          ) : null}
         </div>
       </header>
     </div>

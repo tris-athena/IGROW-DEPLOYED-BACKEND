@@ -6,6 +6,7 @@ function Profile() {
   const [name, setName] = useState('');
   const [id, setID] = useState('');
   const [role, setRole] = useState('');
+  const [dp, setImage] = useState('');
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -32,6 +33,7 @@ function Profile() {
       setName(name);
       setID(id);
       setRole(role);
+      setImage(dp);
     }
   }, []); // Runs only once when the component mounts
 
@@ -47,7 +49,7 @@ function Profile() {
         {/* Profile Picture */}
         <div className="profile-icon-container">
           <img
-            src="images/logoTUP.png"  // Replace with your actual image path
+            src={dp || 'https://via.placeholder.com/100'}  // Replace with your actual image path
             alt="Profile"
             className="profile-icon"
           />

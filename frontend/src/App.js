@@ -19,6 +19,7 @@ import WaterCollection from './Component/Admin/WaterCollection';
 import WaterFiltration from './Component/Admin/WaterFiltration';
 import WaterSupply from './Component/Admin/WaterSupply';
 
+
 import WaterTankQuality from './Component/Admin/WaterTankQuality';
 import AquariumQuality from './Component/Admin/AquariumQuality';
 import WaterDrain from './Component/Admin/WaterDrain';
@@ -65,8 +66,8 @@ function App() {
     <Router>
       <div className="App">
         <AppHeader />
-
-        <main className="content">
+      
+        <main id="main-content"className="content">
           <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Home />} />

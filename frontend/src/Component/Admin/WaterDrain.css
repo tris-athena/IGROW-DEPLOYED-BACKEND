@@ -54,3 +54,48 @@ button {
 button[type="submit"], button[type="button"] {
   margin-right: 10px;
 }
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr; /* Adjust column widths as needed */
+  gap: 10px 20px; /* Row and column gaps */
+  background-color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin-top: 20px;
+}
+
+.grid-header {
+  font-weight: 700;
+  font-size: 1.1rem;
+  border-bottom: 2px solid #4caf50;
+  padding-bottom: 8px;
+  align-self: center;
+}
+
+.grid-item {
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+}
+
+.delete-button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+  background-color: #d32f2f;
+}
+
+/* Optional: center the button inside the last column */
+.grid-item:last-child {
+  justify-content: flex-start; /* or center */
+}

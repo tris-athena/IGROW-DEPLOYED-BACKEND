@@ -1,65 +1,76 @@
-/* Sidebar Styles
-.sidebar-container {
-    position: fixed;
-    z-index: 10;
-  }
-  
-  .sidebar {
-    position: fixed;
-    top: 105px;
-    left: -250px;
-    width: 250px;
-    height: 100%;
-    background-color: #f8f9f0;
-    color: white;
-    transition: left 0.3s ease;
-    z-index: 999;
-  }
-  
-  .sidebar.active {
-    left: 0;
-    background-color: #105d5e;
-  }
-  
-  .sidebar-menu {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .sidebar-link {
-    display: block;
-    padding: 15px;
-    color: #105d5e;
-    text-decoration: none;
-    font-size: 18px;
-    font-weight: bold;
-    transition: background-color 0.2s ease;
-  }
-  
-  .sidebar-link:hover {
-    background-color: white;
-  }
-  
-  /* Sidebar toggle button for mobile */
-  /* .sidebar-toggle {
-    position: relative;
-    top: 20px;
-    left: 20px;
-    cursor: pointer;
-    z-index: 1000;
-    background: none;
-    border: none;
-  }
-  
-  @media (min-width: 768px) {
-    .sidebar {
-      left: 0;
-      transition: none;
-    }
-  
-    .sidebar-toggle {
-      display: none;
-    }
-  }
-   */ 
+/* Sidebar toggle button fixed on top-right */
+.sidebar-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  z-index: 1001;
+  background: transparent;
+  border: none;
+  color: #105d5e;
+  transition: color 0.3s ease;
+}
+
+.sidebar-toggle:hover {
+  color: #0a3a3b;
+}
+
+/* Sidebar styles (from the right side) */
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -250px; /* hidden off-screen */
+  width: 250px;
+  height: 100vh;
+  background-color: #f8f9f0;
+  transition: right 0.3s ease;
+  z-index: 1000;
+  padding-top: 60px;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar.active {
+  right: 0; /* slide in from the right */
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+}
+
+.logo {
+  height: 60px;
+  width: auto;
+  margin-right: 10px;
+}
+
+.logo-text {
+  font-size: 22px;
+  color: #105d5e;
+  font-weight: bold;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  color: #105d5e;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.sidebar-link:hover {
+  background-color: #d3efc8;
+}
+
+.sidebar-link-active {
+  background-color: #105d5e;
+  color: white;
+}
+
+.sidebar-icon {
+  margin-right: 12px;
+  font-size: 18px;
+}

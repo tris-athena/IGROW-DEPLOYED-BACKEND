@@ -58,3 +58,7 @@
     white-space: nowrap;
   }
   
+  
+.container {
+  border: none; /* or border: 0; */
+}

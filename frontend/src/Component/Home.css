@@ -1,87 +1,85 @@
-/* Home.css */
-
-
-
-/* Main container */
-.home {
-  background-color: #f8f9f0 !important;
-  height: 100%;
-  display:contents;
-  align-items: center;
-  justify-content: center;
-
-}
-
-/* Default styles */
-.textLine {
-  font-size: 30px;
+/* Reset and full-screen layout */
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+  border: none !important;
+  outline: none !important;
+  background-clip: padding-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background-color: #f8f9f0 !important;
+  overflow-x: hidden;
+  font-family: sans-serif;
+}
+
+/* Prevent default scrollbars creating space */
+body::-webkit-scrollbar {
+  display: none;
+}
+body {
+  -ms-overflow-style: none;  /* IE & Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+/* Main container fills the screen */
+.home {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100vw;
+  background-color: #f8f9f0 !important;
+}
+
+/* Remove shadows, borders from interactive elements */
+button, input, textarea, select, img {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background-color: transparent;
+}
+
+/* Responsive text */
+.textLine {
+  font-size: 30px;
   color: #6d412b;
   line-height: 1.2;
+  text-align: center;
 }
 
 .igrowText {
   font-size: 150px;
   font-weight: bold;
-  margin: 0;
-  padding: 0;
   line-height: 1.1;
+  color: #6d412b;
+  text-align: center;
 }
 
-/* Fix unwanted green border */
-* {
-  outline: none !important;
-  border: none !important;
-}
-
-/* Ensure buttons and images don't have outlines or borders */
-button, img {
-  outline: none;
-  border: none;
-}
-
-/* Responsive Adjustments */
+/* Responsive scaling */
 @media (max-width: 1200px) {
-  .textLine {
-      font-size: 28px;
-  }
-
-  .igrowText {
-      font-size: 130px;
-  }
+  .textLine { font-size: 28px; }
+  .igrowText { font-size: 130px; }
 }
 
 @media (max-width: 992px) {
-  .textLine {
-      font-size: 24px;
-  }
-
-  .igrowText {
-      font-size: 110px;
-  }
+  .textLine { font-size: 24px; }
+  .igrowText { font-size: 110px; }
 }
 
 @media (max-width: 768px) {
-  .textLine {
-      font-size: 20px;
-      text-align: center;
+  .textLine, .igrowText {
+    text-align: center;
   }
-
-  .igrowText {
-      font-size: 90px;
-      text-align: center;
-  }
+  .textLine { font-size: 20px; }
+  .igrowText { font-size: 90px; }
 }
 
 @media (max-width: 576px) {
-  .textLine {
-      font-size: 18px;
-      text-align: center;
-  }
-
-  .igrowText {
-      font-size: 70px;
-      text-align: center;
-  }
+  .textLine { font-size: 18px; }
+  .igrowText { font-size: 70px; }
 }
