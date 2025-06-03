@@ -116,7 +116,7 @@ const Landing = () => {
     <div style={styles.pageContainer}>
       {/* Header with styled iGROW */}
       <div style={styles.headerText}>
-        dual-source aquaponics{' '}
+        dual-source aquaponicsss{' '}
         <span style={{ color: '#105d5e', fontWeight: 'bold' }}>iGROW</span>
       </div>
 
